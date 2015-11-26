@@ -116,7 +116,7 @@ disqus:
 #################################### global configure #######################################
 
 username: whg333
-baseurl: /
+baseurl: /blog
 markdown: redcarpet
 safe: false
 highlighter: pygments
