@@ -5,8 +5,9 @@
 # Where things are
 source:       .
 destination:  ./_site
-plugins:      ./_plugins
-layouts:      ./_layouts
+plugins_dir:      ./_plugins
+layouts_dir:      ./_layouts
+gems: ["jekyll-paginate", "wdm"]
 paginate:     8
 
 # Handling Reading
