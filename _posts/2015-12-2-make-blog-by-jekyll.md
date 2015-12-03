@@ -137,7 +137,7 @@ comments: true
 ## 后记（2015.12.3）
 之后又做了一些完善博客的事情，主要包括
 
-### 1、评论系统
+### 1、添加多说评论系统
 前面也提到本博客是fork[StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目的，但是后来发现其实该项目只支持国外比较著名的[Disqus](http://www.disqus.com/)评论系统，但是目前访问该网站又转跳到是基于https安全访问的，导致SSL连接出错：
 
 ![disqus_error](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491344803.png)
@@ -145,7 +145,10 @@ comments: true
 不得已只能转向国内的评论系统了。。。国内的看了下结合jekyll较有名有[多说](http://duoshuo.com/)和[友言](http://www.uyan.cc/)，然后发现其实使用的主题[kunka](http://www.zhanxin.info/jekyll/2013-08-11-jekyll-theme-kunka.html)本身就支持多说评论，只是StrayBirds项目修改导致只支持Disqus的，期间参考了[Jekyll+多说，建立属于你的轻博客](http://www.ituring.com.cn/article/114888)，然后做出如下修改即可：修改comment.ext令其根据配置也支持多说评论：
 ![kunka_duoshuo](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448043.png)
 
-然后最新的多说评论框div也有变化了，防止出现评论乱串等问题，添加了一些属性，修改如下图所示，把上面那行的改为下面那行即可，注意此处的site.domainname是在_config.yml里面自定义的全局变量名，值为www.iclojure.com，代表本博客地址的[主域名](http://www.iclojure.com)
+然后最新的多说评论框div也有变化了，防止出现评论乱串等问题，添加了一些属性，例如必要的data-thread-key属性，如果没有的话，使用Chrome的控制台会看到报错：
+![ds_attr](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914760076.png)
+
+然后最终的修改如下图所示，把上面那行的改为下面那行即可，注意此处的site.domainname是在_config.yml里面自定义的全局变量名，值为www.iclojure.com，代表本博客地址的[主域名](http://www.iclojure.com)
 ![ds_thread](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914029381.png)
 
 然后配置里面添加上多说，注意账号改为你自己的多说账号：
@@ -173,4 +176,11 @@ comments: true
 3. 添加robots.txt文件对爬虫表示友好
 4. 添加favicon.ico令博客看起来像个样子（使用[Favicon.ico在线制作](http://www.favicon-icon-generator.com/)生成的）
 
+### 4、添加多说分享系统
+在添加了多说评论系统后，再瞎逛多说平台时发现还有分享系统：
+![ds_share](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914778761.png)
 
+然后就顺便也添加上去了，但需要注意的是，由于jekyll 3.0.1版本的问题，导致分享代码的中文信息会报错：
+
+然后上网查找了下解决方案，发现都是jekyll几年前版本的，现在都已经不适应了。而且不单单在本地jekyll报错，尝试上传到GitHub后虽然博客可以照常访问，但是更新都没有生效。。。最后不得已只能把代码中的中文字符全部使用&nbsp;代替了，最后博客文章底部的分享和评论显示如下：
+![share_discuss](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491482669.png)
