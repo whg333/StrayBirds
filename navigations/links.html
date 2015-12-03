@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Links
-comment: true
+comment: false
 ---
 
 <div class="article">
@@ -15,14 +15,5 @@ comment: true
                 {% endfor %}
         </ul>
         {% endfor %}
-    </div>
-    <div class="comment">
-        {% if site.disqus.config %}
-        <div id="disqus_thread"></div>
-        {% else %}
-            {% if site.duoshuo.config %}
-            <div class="ds-thread" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-url="{{site.baseurl}}/{{ page.url }}"></div>
-            {% endif %}
-        {% endif %}
     </div>
 </div>
