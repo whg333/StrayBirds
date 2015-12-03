@@ -46,7 +46,7 @@ description: 书写是为了总结，总结是为了前进！
 keywords: github, jekyll, java
 url: /blog
 feed: /atom.xml
-favicon: http://blog.iclojure.com/favicon.ico
+favicon: http://www.iclojure.com/favicon.ico
 
 #Nav config
 nav:
