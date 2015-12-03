@@ -145,6 +145,9 @@ comments: true
 不得已只能转向国内的评论系统了。。。国内的看了下结合jekyll较有名有[多说](http://duoshuo.com/)和[友言](http://www.uyan.cc/)，然后发现其实使用的主题[kunka](http://www.zhanxin.info/jekyll/2013-08-11-jekyll-theme-kunka.html)本身就支持多说评论，只是StrayBirds项目修改导致只支持Disqus的，期间参考了[Jekyll+多说，建立属于你的轻博客](http://www.ituring.com.cn/article/114888)，然后做出如下修改即可：修改comment.ext令其根据配置也支持多说评论：
 ![kunka_duoshuo](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448043.png)
 
+然后最新的多说评论框div也有变化了，防止出现评论乱串等问题，添加了一些属性，修改如下图所示，把上面那行的改为下面那行即可，注意此处的site.domainname是在_config.yml里面自定义的全局变量名，值为www.iclojure.com，代表本博客地址的[主域名](http://www.iclojure.com)
+![ds_thread](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914029381.png)
+
 然后配置里面添加上多说，注意账号改为你自己的多说账号：
 ![](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448058.png)
 
