@@ -136,6 +136,7 @@ comments: true
 
 ## 后记（2015.12.3）
 之后又做了一些完善博客的事情，主要包括
+
 ### 1、评论系统
 前面也提到本博客是fork[StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目的，但是后来发现其实该项目只支持国外比较著名的[Disqus](http://www.disqus.com/)评论系统，但是目前访问该网站又转跳到是基于https安全访问的，导致SSL连接出错：
 
@@ -155,6 +156,11 @@ comments: true
 >http://libs.baidu.com/jquery/1.8.3/jquery.min.js
 
 另外还有头像的设置，StrayBirds项目直接使用的是GitHub上的头像，很不幸，也是https访问的，有时网络不好的时候头像就空白了。。。所以我在自己博客项目目录下传个头像文件，改为http的访问即可
+
+然后还发现了有个链接：
+>netdna.bootstrapcdn.com
+
+也是一直在做请求，查了一下才知道原来是[Font Awesome——最流行最全面最优秀的字体图标](http://www.58img.com/web/807)
 
 ### 3、简单SEO和标准
 具体参考了[Github Pages + Jekyll搭建博客之SEO](http://zyzhang.github.io/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/)做的，包括：

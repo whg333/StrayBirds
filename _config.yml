@@ -126,5 +126,8 @@ description: 书写是为了总结，总结是为了前进！
 theme: kunka
 disqusname: whg
 
+#custom variables
+domainname: www.iclojure.com
+
 # theme can be: hack, leap-day, merlot, midnight, minimal, modernist, slate, time-machine, kunka
 # those themes are all come from GitHub Pages Themes
