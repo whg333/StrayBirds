@@ -119,7 +119,7 @@ comments: true
 
 ### 5、中文目录资源地址不能访问
 启动后测试分页功能以及编写博客文章等功能都是没有问题的：
-![chinese_error1](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144905732704.png)
+![chinese_error1](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913543594.png)
 
 但是还有一个问题是带有中文目录资源地址不能访问，这个问题在GitHub是没有的，只有在本地jekyll才会出现。。。例如点击上图博客文章《Java中的并发》，由于其分类是中文“技术”，然后访问报错：
 ![chinese_error2](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144905808582.png)
@@ -142,8 +142,11 @@ comments: true
 
 ![disqus_error](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491344803.png)
 
-不得已只能转向国内的评论系统了。。。国内的看了下结合jekyll较有名有[多说](http://duoshuo.com/)和[友言](http://www.uyan.cc/)，然后发现其实使用的主题[kunka](http://www.zhanxin.info/jekyll/2013-08-11-jekyll-theme-kunka.html)本身就支持多说评论，只是StrayBirds项目修改导致只支持Disqus的，期间参考了[Jekyll+多说，建立属于你的轻博客](http://www.ituring.com.cn/article/114888)，然后做出如下修改即可：
+不得已只能转向国内的评论系统了。。。国内的看了下结合jekyll较有名有[多说](http://duoshuo.com/)和[友言](http://www.uyan.cc/)，然后发现其实使用的主题[kunka](http://www.zhanxin.info/jekyll/2013-08-11-jekyll-theme-kunka.html)本身就支持多说评论，只是StrayBirds项目修改导致只支持Disqus的，期间参考了[Jekyll+多说，建立属于你的轻博客](http://www.ituring.com.cn/article/114888)，然后做出如下修改即可：修改comment.ext令其根据配置也支持多说评论：
 ![kunka_duoshuo](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448043.png)
+
+然后配置里面添加上多说，注意账号改为你自己的多说账号：
+![](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448058.png)
 
 ### 2、多余或者失效的https访问
 除了前面提到过的Disqus是访问是https外，后来发现StrayBirds项目使用的jquery1.8.3版本的链接竟然也是https连接新浪库房的，这些都导致打开页面的时候Chrome状态栏提示“正在建立安全连接/正在打开隧道”，最要命的是那个基于https新浪库房的jquery1.8.3在我这还是不可用的（难道是公司网络问题吗？）。。。后来直接改为百度库房的了：
