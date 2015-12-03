@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 测试第一个博客文章
-comments: false
+comments: true
 category: test
 ---
 
