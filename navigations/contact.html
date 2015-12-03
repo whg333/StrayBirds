@@ -31,7 +31,7 @@ comment: true
         <div id="disqus_thread"></div>
         {% else %}
             {% if site.duoshuo.config %}
-            <div class="ds-thread"></div>
+            <div class="ds-thread" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-url="{{site.baseurl}}/{{ page.url }}"></div>
             {% endif %}
         {% endif %}
     </div>
