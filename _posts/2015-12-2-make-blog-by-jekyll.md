@@ -54,7 +54,9 @@ comments: true
 确保正确安装jekyll后可使用如下命令启动jekyll
 >jekyll serve --safe --watch
 
-但可能会遇到这几个问题：
+但人生十有八九不如意，更何况身处更新换代如此频繁的IT界，所以你可能会遇到如下这几个问题
+
+## jekyll常见问题
 
 ### 1、启动jekyll的警告
 因为安装jekyll时没有指定版本，所以默认安装最新版，例如我安装的是3.0.1版本的
@@ -129,3 +131,35 @@ comments: true
 
 如此一来本地jekyll也可以正常访问中文目录资源地址了：
 ![chinese_error5](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14490580864.png)
+
+### 6、其他注意事项
+![ps](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913481766.jpg)
+
+## 后记（2015.12.3）
+之后又做了一些完善博客的事情，主要包括
+### 1、评论系统
+前面也提到本博客是fork[StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目的，但是后来发现其实该项目只支持国外比较著名的[Disqus](http://www.disqus.com/)评论系统，但是目前访问该网站又转跳到是基于https安全访问的，导致SSL连接出错：
+
+![disqus_error](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491344803.png)
+
+不得已只能转向国内的评论系统了。。。国内的看了下结合jekyll较有名有[多说](http://duoshuo.com/)和[友言](http://www.uyan.cc/)，然后发现其实使用的主题[kunka](http://www.zhanxin.info/jekyll/2013-08-11-jekyll-theme-kunka.html)本身就支持多说评论，只是StrayBirds项目修改导致只支持Disqus的，期间参考了[Jekyll+多说，建立属于你的轻博客](http://www.ituring.com.cn/article/114888)，然后做出如下修改即可：
+![kunka_duoshuo](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144913448043.png)
+
+### 2、多余或者失效的https访问
+除了前面提到过的Disqus是访问是https外，后来发现StrayBirds项目使用的jquery1.8.3版本的链接竟然也是https连接新浪库房的，这些都导致打开页面的时候Chrome状态栏提示“正在建立安全连接/正在打开隧道”，最要命的是那个基于https新浪库房的jquery1.8.3在我这还是不可用的（难道是公司网络问题吗？）。。。后来直接改为百度库房的了：
+>https://lib.sinaapp.com/js/jquery/1.8.3/jquery.min.js
+
+改为
+>http://libs.baidu.com/jquery/1.8.3/jquery.min.js
+
+另外还有头像的设置，StrayBirds项目直接使用的是GitHub上的头像，很不幸，也是https访问的，有时网络不好的时候头像就空白了。。。所以我在自己博客项目目录下传个头像文件，改为http的访问即可
+
+### 3、简单SEO和标准
+具体参考了[Github Pages + Jekyll搭建博客之SEO](http://zyzhang.github.io/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/)做的，包括：
+
+1. jekyll博客头的title、description以及tags设置
+2. 避免jekyll的permalink造成死链接
+3. 添加robots.txt文件对爬虫表示友好
+4. 添加favicon.ico令博客看起来像个样子（使用[Favicon.ico在线制作](http://www.favicon-icon-generator.com/)生成的）
+
+

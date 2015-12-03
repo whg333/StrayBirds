@@ -109,7 +109,10 @@ customLinks:
 disqus:
   config: false
   id: whg
-
+  
+duoshuo:
+  config: true
+  id: iclojure
 
 #################################### global configure #######################################
 username: whg333
