@@ -185,3 +185,5 @@ comments: true
 
 然后上网查找了下[解决方案](http://www.cnblogs.com/aleda/articles/Jekyll-in-Windows-following-Chinese-encoding-problem-solutions.html)，发现都是jekyll几年前版本的，现在都已经不适应了。而且不单单在本地jekyll报错，尝试上传到GitHub后虽然博客可以照常访问，但是更新都没有生效。。。最后不得已只能把代码中的中文字符全部使用&nbsp;代替了，最后博客文章底部的分享和评论显示如下：
 ![share_discuss](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491482669.png)
+
+（完——转载请注明出处）
