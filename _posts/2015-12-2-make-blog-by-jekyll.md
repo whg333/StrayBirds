@@ -183,7 +183,7 @@ comments: true
 然后就顺便把多说分享系统也添加上去了，但需要注意的是，由于jekyll 3.0.1版本的问题，导致分享代码里面的中文会报错：
 ![jekyll_gbk](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914859479.png)
 
-然后上网查找了下[解决方案](http://www.cnblogs.com/aleda/articles/Jekyll-in-Windows-following-Chinese-encoding-problem-solutions.html)，发现都是jekyll几年前版本的，现在都已经不适应了。而且不单单在本地jekyll报错，尝试上传到GitHub后虽然博客可以照常访问，但是更新都没有生效。。。最后不得已只能把代码中的中文字符全部使用空格&nbs p;（话说这个空格写法怎么在md里面转义？）代替了，最后博客文章底部的分享和评论显示如下：
+然后上网查找了下[解决方案](http://www.cnblogs.com/aleda/articles/Jekyll-in-Windows-following-Chinese-encoding-problem-solutions.html)，发现都是jekyll几年前版本的，现在都已经不适应了。而且不单单在本地jekyll报错，尝试上传到GitHub后虽然博客可以照常访问，但是更新都没有生效。。。最后不得已只能把代码中的中文字符全部使用空格& nbsp;（话说这个空格写法怎么在md里面转义？）代替了，最后博客文章底部的分享和评论显示如下：
 ![share_discuss](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491482669.png)
 
 **（2015.12.4 更新）**最后发现可以将其与之前的comments.ext结合：
