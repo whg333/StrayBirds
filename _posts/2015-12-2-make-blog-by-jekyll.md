@@ -168,22 +168,41 @@ comments: true
 
 也是一直在做请求，查了一下才知道原来是[Font Awesome——最流行最全面最优秀的字体图标](http://www.58img.com/web/807)
 
-### 3、简单SEO和标准
+### 3、简单SEO
 具体参考了[Github Pages + Jekyll搭建博客之SEO](http://zyzhang.github.io/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/)做的，包括：
 
-1. jekyll博客头的title、description以及tags设置
-2. 避免jekyll的permalink造成死链接
-3. 添加robots.txt文件对爬虫表示友好
-4. 添加favicon.ico令博客看起来像个样子（使用[Favicon.ico在线制作](http://www.favicon-icon-generator.com/)生成的）
+1. jekyll博客头的**title、description以及tags**设置
+2. 避免jekyll的**permalink**造成死链接
+3. 添加**robots.txt**文件对爬虫表示友好
+4. 添加**favicon.ico**令博客看起来像个样子（使用[Favicon.ico在线制作](http://www.favicon-icon-generator.com/)生成的）
 
 ### 4、添加多说分享系统
-在添加了多说评论系统后，再瞎逛多说平台时发现还有分享系统：
+在添加了多说评论系统后，在瞎逛多说平台时发现还有多说分享系统：
 ![ds_share](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914778761.png)
 
-然后就顺便也添加上去了，但需要注意的是，由于jekyll 3.0.1版本的问题，导致分享代码的中文信息会报错：
+然后就顺便把多说分享系统也添加上去了，但需要注意的是，由于jekyll 3.0.1版本的问题，导致分享代码里面的中文会报错：
 ![jekyll_gbk](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144914859479.png)
 
 然后上网查找了下[解决方案](http://www.cnblogs.com/aleda/articles/Jekyll-in-Windows-following-Chinese-encoding-problem-solutions.html)，发现都是jekyll几年前版本的，现在都已经不适应了。而且不单单在本地jekyll报错，尝试上传到GitHub后虽然博客可以照常访问，但是更新都没有生效。。。最后不得已只能把代码中的中文字符全部使用&nbsp;代替了，最后博客文章底部的分享和评论显示如下：
 ![share_discuss](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491482669.png)
 
-（完——转载请注明出处）
+**（2015.12.4 更新）**最后发现可以将其与之前的comments.ext结合：
+![comments_ext](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920456945.png)
+
+因为直接在html里面写中文是不行的，但是在模板/脚本文件里面却是可以的，如此一来的话，把之前多余的判断评论系统的if else语句也整合进来，如此一来就只需要在一个地方include comments.ext即可达到复用的目的：
+![include_comments](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457058.png)
+
+然后删除多余的判断评论系统的if else语句：
+![delete_if](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457002.png)
+
+### 5、添加博客版权信息
+最后类似其他博客一样在文章最后添加下版权信息，包括BY-NC-SA许可协议以及作者和日期：
+![blog_copyright1](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457124.png)
+
+对应的CSS文件也修改：
+![blog_copyright2](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457193.png)
+
+最终的显示如下图所示：
+![blog_copyright3](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457259.png)
+
+（完）

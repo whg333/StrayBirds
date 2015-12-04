@@ -26,14 +26,7 @@ comment: true
     <div class="contact">
         <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>
     </div>
-    {% include comments.ext %}
-    <div class="comment">
-        {% if site.disqus.config %}
-        <div id="disqus_thread"></div>
-        {% else %}
-            {% if site.duoshuo.config %}
-            <div class="ds-thread" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}"></div>
-            {% endif %}
-        {% endif %}
-    </div>
+    {% if page.comments %}
+        {% include comments.ext %}
+    {% endif %}
 </div>

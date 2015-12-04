@@ -15,26 +15,7 @@
         <a class="next" href="{{ site.baseurl }}/{{ page.next.url }}" rel="bookmark">{{ page.next.title | truncatewords:5 }}&nbsp;&raquo;</a>
         {% endif %}
     </nav>
-    <div class="comment">
-        {% if site.disqus.config %}
-        <div id="disqus_thread"></div>
-        {% else %}
-            {% if site.duoshuo.config %}
-			<div class="ds-share" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-images="{{ author.imageLink }}" data-content="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}">
-				<div class="ds-share-inline">
-				<ul  class="ds-share-icons-16">
-					<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">&nbsp;</a></li>
-					<li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">&nbsp;</a></li>
-					<li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">&nbsp;</a></li>
-					<li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">&nbsp;</a></li>
-					<li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">&nbsp;</a></li>
-				</ul>
-				<div class="ds-share-icons-more">
-				</div>
-				</div>
-			</div><br/>
-            <div class="ds-thread" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}"></div>
-            {% endif %}
-        {% endif %}
-    </div>
+    {% if page.comments %}
+        {% include comments.ext %}
+    {% endif %}
 </div>
