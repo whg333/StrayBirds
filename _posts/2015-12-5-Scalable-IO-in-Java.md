@@ -2,7 +2,7 @@
 layout: post
 title: Scalable IO in Java——多Reactor的代码实现
 description: "Scalable IO in Java——多Reactor的代码实现"
-category: Java
+category: [Java]
 tags: [github, jekyll]
 comments: true
 ---

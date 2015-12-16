@@ -2,7 +2,7 @@
 layout: post
 title: jekyll最新版3.0.1安装与问题解决
 description: "jekyll最新版3.0.1安装与问题解决"
-category: 技术
+category: [技术]
 tags: [github, jekyll]
 comments: true
 ---
