@@ -8,7 +8,7 @@ comments: true
 ---
 
 ## Java高伸缩性IO处理
-在Doug Lea大神的经典pdf文章《Scalable IO in Java》中，把Reactor模式和Java NIO整合起来，一步步理论结合Java代码构建了一套高伸缩性的网络处理框架雏形，从当今的流行NIO框架（Netty、Main、Grizzly）中无不看到其本质均与该文章所述架构不谋而合（或者也可以说其实是借鉴并以现代化的方式实现了Doug Lea的思想吧），这里总结《Scalable IO in Java》中的要点并记录下自己实现多Reactor的过程中遇到的坑
+在Doug Lea大神的经典pdf文章[《Scalable IO in Java》](http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf){:target="_blank"}中，把Reactor模式和Java NIO整合起来，一步步理论结合Java代码构建了一套高伸缩性的网络处理框架雏形，从当今的流行NIO框架（Netty、Main、Grizzly）中无不看到其本质均与该文章所述架构不谋而合（或者也可以说其实是借鉴并以现代化的方式实现了Doug Lea的思想吧），这里总结《Scalable IO in Java》中的要点并记录下自己实现多Reactor的过程中遇到的坑
 
 ### 网络服务的基本结构
 当今网络上的各种基于TCP/IP的应用服务，其对1次请求的处理过程的本质流程结构均为
