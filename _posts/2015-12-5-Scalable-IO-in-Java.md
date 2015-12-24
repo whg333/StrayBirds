@@ -259,7 +259,7 @@ public abstract class Reactor extends Thread{
 ```
 
 1. Reactor中的init方法里的isMainReactor字段即是用来判断是否该Reactor是否为mainReactor的，如果是mainReactor的话，则注册感兴趣的为ACCEPT事件，并且添加Acceptor附件
-2. 然后run方法里面的while循环即是EventLoop轮询了，需要注意的是这里有坑：别使用阻塞的select方法，因为该方法会导致accept后subReactor的selector在register的时候会一直阻塞
+2. 然后run方法里面的while循环即是EventLoop轮询了，需要注意的是这里有坑：别使用阻塞的select方法，因为该方法会导致accept后subReactor的selector在register的时候会一直阻塞；也别使用非阻塞的selecNow方法，因为selectNow在无限循环下即使没有IO事件，也会使CPU飙到100%；所以最终选择使用带有超时的select(timeout)方法
 
 #### Acceptor
 ```java
