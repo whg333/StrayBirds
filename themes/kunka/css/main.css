@@ -296,6 +296,7 @@ a         { color: #91736b; text-decoration: none; }
 .main .article img {
     position: relative;
     max-width: 100%;
+    cursor: pointer;
 }
 
 
