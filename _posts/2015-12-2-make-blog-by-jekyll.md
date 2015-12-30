@@ -1,9 +1,9 @@
 ---
 layout: post
-title: jekyll最新版3.0.1安装与问题解决
-description: "jekyll最新版3.0.1安装与问题解决"
+title: win7本地安装jekyll最新版3.0.1的问题与解决
+description: "win7本地安装jekyll最新版3.0.1的问题与解决"
 category: [技术]
-tags: [github, jekyll]
+tags: [github, jekyll, win7]
 comments: true
 ---
 
@@ -64,7 +64,7 @@ comments: true
 因为是最新版本，所以其jekyll的_config.yml配置文件的选项名字有变化，这个时候jekyll会报警告，提示过期了让你更新配置名字：
 ![jekyll_warm1](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144904873338.jpg)
 
-前2个过期（Deprecation）警告只需要根据提示把更新_config.yml里面的配置名字即可，但是下面还有1个警告：没有包含（include）jekyll-paginate进Gemfile里面，解决方案是添加配置名为gems且值为jekyll-paginate进配置文件里面：
+前2个过期（Deprecation）警告只需要根据提示把更新\_config.yml里面的配置名字即可，但是下面还有1个警告：没有包含（include）jekyll-paginate进Gemfile里面，解决方案是添加配置名为gems且值为jekyll-paginate进配置文件里面：
 
 ![jekyll_warm2](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14490494151.png)
 
@@ -104,7 +104,7 @@ comments: true
 
 但其实由于对Ruby的不了解，连Gemfile的具体位置和作用都没搞明白，甚至还自己在该blog项目目录下创建了一个Gemfile文件，但还是不行。。。
 
-后来根据第1条在配置文件_config.yml添加的gems配置名，猜测估计就是所谓的gems的依赖项，所以把wdm添加进去_config.yml后的gems配置变为：
+后来根据第1条在配置文件\_config.yml添加的gems配置名，猜测估计就是所谓的gems的依赖项，所以把wdm添加进去_config.yml后的gems配置变为：
 >gems: ["jekyll-paginate", "wdm"]
 
 然后再次尝试启动后发现报错：
@@ -138,7 +138,7 @@ comments: true
 之后又做了一些完善博客的事情，主要包括
 
 ### 1、添加多说评论系统
-前面也提到本博客是fork[StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目的，但是后来发现其实该项目只支持国外比较著名的[Disqus](http://www.disqus.com/)评论系统，但是目前访问该网站又转跳到是基于https安全访问的，导致SSL连接出错：
+前面也提到本博客是fork [StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目的，但是后来发现其实该项目只支持国外比较著名的[Disqus](http://www.disqus.com/)评论系统，但是目前访问该网站又转跳到是基于https安全访问的，导致SSL连接出错：
 
 ![disqus_error](http://cejdh.img46.wal8.com/img46/533449_20151202165458/14491344803.png)
 
@@ -189,7 +189,7 @@ comments: true
 **（2015.12.4 更新）**最后发现可以将其与之前的comments.ext结合：
 ![comments_ext](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920456945.png)
 
-因为直接在html里面写中文是不行的，但是在模板/脚本文件里面却是可以的，如此一来的话，把之前多余的判断评论系统的if else语句也整合进来，如此一来就只需要在一个地方include comments.ext即可达到复用的目的：
+**因为直接在html里面写中文是不行的，但是在模板/脚本文件里面却是可以的。**如此一来的话，把之前多余的判断评论系统的if else语句也整合进来，如此一来就只需要在一个地方include comments.ext即可达到复用的目的：
 ![include_comments](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457058.png)
 
 然后删除多余的判断评论系统的if else语句：
