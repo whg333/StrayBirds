@@ -49,7 +49,7 @@
 		</div>
 		</div>
 	</div><br/>
-    <div class="ds-thread" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}"></div>
+    <div class="ds-thread" data-thread-key="{% if page.id %}{{ page.id }}{% else %}{{ page.url }}{% endif %}" data-title="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}"></div>
 	{% endif %}
 {% endif %}
 </div>
