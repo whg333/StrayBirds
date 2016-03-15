@@ -270,6 +270,8 @@ comments: true
 而应该改为
 >http://api.duoshuo.com/threads/counts.jsonp
 
+在此感谢[多说API——获取文章评论、转发数底部被置顶的这篇例子文章](http://www.smzdwan.com/news/797.html)才知道的，否则一直使用.json后缀请求，即使设置了dataType为jsonp，却还是一直报解析错误**Uncaught SyntaxError: Unexpected token :**
+
 ### 3、在博客主页添加comments.js处理多个文章的评论数和喜欢数
 思路：
 
