@@ -36,7 +36,7 @@
 			|| document.getElementsByTagName('body')[0]).appendChild(ds);
 		})();
 	</script>
-	<div class="ds-share" data-thread-key="{{ page.id }}" data-title="{{ page.title }}" data-images="{{ author.imageLink }}" data-content="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}">
+	<div class="ds-share" data-thread-key="{% if page.id %}{{ page.id }}{% else %}{{ page.url }}{% endif %}" data-title="{{ page.title }}" data-images="{{ author.imageLink }}" data-content="{{ page.title }}" data-url="{{ site.domainname }}{{ site.baseurl }}{{ page.url }}">
 		<div class="ds-share-inline">
 		<ul  class="ds-share-icons-16">
 			<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
