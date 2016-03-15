@@ -10,7 +10,7 @@ comments: true
 ## GitHub+jekyll搭建个人博客
 先根据[《创建GitHub技术博客全攻略》](http://blog.csdn.net/renfufei/article/details/37725057/)去做一些前期GitHub上的测试准备工作，然后再根据[《使用 GitHub, Jekyll 打造自己的免费独立博客》](http://blog.csdn.net/on_1y/article/details/19259435)这篇文章直接fork了该博主的[StrayBirds](https://github.com/minixalpha/StrayBirds/tree/gh-pages)项目来快速搭建了自己的博客
 
-虽说可以直接在_post目录下编写博客文章，但是如果每次都使用GitHub在线编辑md(markdown)文件，然后查看生成的html，不行再去修改的话，效率太低，且又是由于网络原因，导致在线编辑md文件延时缓慢，所以最好还是执行如下图所示维护流程：
+虽说可以直接在_post目录下编写博客文章，但是如果每次都使用GitHub在线编辑md(markdown)文件，然后查看生成的html，不行再去修改的话，效率太低，且又是由于网络原因，导致在线编辑md文件延时缓慢，所以最好还是执行如下图所示维护流程（[图片源自此处](http://www.pchou.info/web-build/2013/01/03/build-github-blog-page-01.html)）：
 ![jekyll_flow](http://www.pchou.info/assets/img/build-github-blog-page-01-img0.png)
 
 即先在本地写完md文件，然后本地编译预览，没问题后使用git push上去即可
@@ -26,7 +26,7 @@ comments: true
 ## 安装Ruby和DevKit
 首先是Ruby和DevKit的安装，因为使用的是Win7系统，所以使用RubyInstaller安装的Ruby和Devkit，都在[这里](http://rubyinstaller.org/downloads/)下载
 
-使用的是该页面的推荐Ruby 2.1.X，即Ruby 2.1.7版本，然后对应的DevKit使用DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe这个
+使用的是该页面的推荐Ruby 2.1.X，即Ruby 2.1.7版本，然后对应的DevKit使用**DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe**这个
 
 首先安装Ruby 2.1.7，在Win7下直接Next比较简单，注意勾选上添加Ruby进系统Path以及管理rb后缀名为Ruby文件，安装好了以后就可以在命令行使用ruby命令了
 
@@ -204,5 +204,38 @@ comments: true
 
 最终的显示如下图所示：
 ![blog_copyright3](http://cejdh.img46.wal8.com/img46/533449_20151202165458/144920457259.png)
+
+**（2015.12.4 更新——完）**
+
+****
+
+**（2016.3.15 更新）**更换电脑后需要重装jekyll
+
+### 1、如果安装DevKit失败，且报错
+>Invalid configuration or no Rubies listed. Please fix 'config.yml' and rerun 'ruby dk.rb
+
+一般是在解压DevKit出来文件夹下的config.yml文件没有配置好，配置指定一下系统的Rbuy路径即可，具体可参考[这里](http://blog.csdn.net/promaster/article/details/47260399)
+
+### 2、如果发现淘宝镜像也可能不稳定不好使了
+![img2016_0](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145802095355.png)
+
+发现淘宝镜像不想的话，可以更换成[山东理工大学的Rubygems 镜像](http://ruby.sdutlinux.org/)
+![img2016_1](http://cejdh.img47.wal8.com/img47/533449_20151202165458/14580209544.png)
+
+然后也同样使用
+>gem sources -l
+
+查看确保源地址已经更换，最后继续安装jekyll即可，如下图所示：
+![img2016_2](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145802095435.png)
+
+### 3、如果使用gjekyll serve --trace启动发现报错
+>in `require': cannot load such file -- wdm (LoadError)
+
+则表示没有安装wdm依赖，使用
+>gem install wdm
+
+安装一下即可
+
+**（2016.3.15 更新——完）**
 
 （完）
