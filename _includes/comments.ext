@@ -7,7 +7,7 @@
 	</ul>
 </fieldset>
 </div>
-<div class="comment">
+<div class="comment" id="comment">
 {% if site.disqus.config %}
 	<div id="disqus_thread"></div>
 	 <script type="text/javascript">

@@ -166,7 +166,8 @@ comments: true
 然后还发现了有个链接：
 >netdna.bootstrapcdn.com
 
-也是一直在做请求，查了一下才知道原来是[Font Awesome——最流行最全面最优秀的字体图标](http://www.58img.com/web/807)
+也是一直在做请求，查了一下才知道原来是[Font Awesome——最流行最全面最优秀的字体图标](http://www.58img.com/web/807)，博客文章的发布日期图标、分类图标等都是直接以形如
+**class="icon-calendar"**或**class="icon-folder-open"**的方式编写然后在界面上展示出来的，[具体支持的图标可看这里](http://dev.styler.jp/bootstrap-plus.html)
 
 ### 3、简单SEO
 具体参考了[Github Pages + Jekyll搭建博客之SEO](http://zyzhang.github.io/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/)做的，包括：
@@ -237,5 +238,58 @@ comments: true
 安装一下即可
 
 **（2016.3.15 更新——完）**
+
+****
+
+**（2016.3.16 更新）**为博客主页的文章显示评论数和喜欢数
+
+### 1、多说API——获取文章评论、转发数
+具体的[多说API地址请点击这里](http://dev.duoshuo.com/docs/50615732a834c63c56004257)
+
+然后里面的描述算清楚了，假如要查看本篇博客的评论数，可在浏览器内直接请求
+>http://api.duoshuo.com/threads/counts.json?short_name=**iclojure**&threads=**/articles/2015/12/02/make-blog-by-jekyll**
+
+发现浏览器内请求成功返回
+![duoshuo_2](http://cejdh.img47.wal8.com/img47/533449_20151202165458/14580744199.png)
+
+其中粗体的是多说用户名，以及本篇博客发送给多说的page.id，即绑定到多说系统的标识id——data-thread-key，其实文章标识可以在多说后台编辑的
+![duoshuo_0](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145807441968.png)
+
+但是需要注意可能误删某篇文章或者发送给多说的位移标识id有变化，则可能会丢失掉之前的评论。。。
+![duoshuo_1](http://cejdh.img47.wal8.com/img47/533449_20151202165458/14580744198.png)
+
+### 2、跨域调用多说API
+既然已经知道了多说API的地址，且在浏览器中直接访问也成功了，那咱们是不是就可以直接使用Ajax请求该json数据了呢？
+
+其实并不是，因为有Ajax跨域访问的问题，如果直接Ajax请求上面浏览器访问的地址，会直接报跨域不被允许的错误
+>**No 'Access-Control-Allow-Origin' header is present on the requested resource**
+
+解决办法是把Ajax请求的dataType设置为jsonp，但最为关键的是其Ajax请求url不是
+>http://api.duoshuo.com/threads/counts.json
+
+而应该改为
+>http://api.duoshuo.com/threads/counts.jsonp
+
+### 3、在博客主页添加comments.js处理多个文章的评论数和喜欢数
+思路：
+
+一、博客主页遍历分页post时为每篇博客设置id，该id与发给多说的唯一标识id一致
+
+二、在comments.js收集本页所有博客id，并作为参数传递给Ajax跨域请求
+
+三、把Ajax跨域请求的响应结果再根据博客id设置评论数和喜欢数的值
+
+具体代码如下
+![duoshuo_3](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145807441993.png)
+
+这里因为发送给多说的id是形如**/articles/2015/12/02/make-blog-by-jekyll**的格式，JQuery里面使用**$("#/articles/2015/12/02/make-blog-by-jekyll")**获取该元素是会报错的，所有不单单代码中，页面上也使用了replace去把/替换成\_，然后最后再从/转回\_来
+![duoshuo_5](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145807502648.png)
+
+最终的博客主页效果如下
+![duoshuo_4](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145807442002.png)
+
+然后评论数和喜欢数都添加了**a锚点加上#号的跳转链接方式**，即点击评论数或者喜欢数，会直接跳转到该博客文章的评论位置
+
+**（2016.3.16 更新——完）**
 
 （完）

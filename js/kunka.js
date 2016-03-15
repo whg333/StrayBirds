@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	//console.log("jquery work!");
+	//console.log("jquery work in kunka.js!");
 	
 	//通过新窗口打开不是本站的链接
 	$(document.links).filter(function() {
