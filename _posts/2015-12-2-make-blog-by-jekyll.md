@@ -212,10 +212,11 @@ comments: true
 
 **（2016.3.15 更新）**更换电脑后需要重装jekyll
 
-### 1、如果安装DevKit失败，且报错
+### 1、如果使用ruby dk.rb install安装DevKit失败，且报错
 >Invalid configuration or no Rubies listed. Please fix 'config.yml' and rerun 'ruby dk.rb
 
-一般是在解压DevKit出来文件夹下的config.yml文件没有配置好，配置指定一下系统的Rbuy路径即可，具体可参考[这里](http://blog.csdn.net/promaster/article/details/47260399)
+一般是在解压DevKit出来文件夹下的config.yml文件（该文件是ruby dk.rb init初始化生成的）没有配置好，配置指定一下系统的Ruby路径即可，具体可参考[这里](http://blog.csdn.net/promaster/article/details/47260399)，我的配置如下
+![img20160323_0](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145867384822.png)
 
 ### 2、如果发现淘宝镜像也可能不稳定不好使了
 ![img2016_0](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145802095355.png)
@@ -228,6 +229,10 @@ comments: true
 
 查看确保源地址已经更换，最后继续安装jekyll即可，如下图所示：
 ![img2016_2](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145802095435.png)
+
+但最后发现默认给安装成了jekyll 2.5.3版的了。。。但应该关系不大，还是可以正常使用的，当然我们希望jekyll 3.x版本能正常兼容jekyll 2.x版本，但貌似可能会[有点问题](https://rebornix.com/engineering/2015/11/16/Jekyll3Breaks/)，但至少对我的博客没影响
+
+![img20160323_1](http://cejdh.img47.wal8.com/img47/533449_20151202165458/145867385021.png)
 
 ### 3、如果使用gjekyll serve --trace启动发现报错
 >in `require': cannot load such file -- wdm (LoadError)
