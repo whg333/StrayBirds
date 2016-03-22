@@ -304,7 +304,7 @@ public abstract class Acceptor extends Thread {
 
 Acceptor是被mainReactor当做ACCPET的附属对象，所以当有连接接收过来了，就使用handle方法处理，handle方法的Selector参数即可传递subReactors的Selector，然后先对READ感兴趣即可。
 
-#### Handle
+#### Handler
 ```java
 public abstract class Handler extends Thread {
 
