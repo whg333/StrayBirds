@@ -713,6 +713,11 @@ a         { color: #91736b; text-decoration: none; }
 .aside-item {
     margin: 20px 0;
 }
+.aside-item #clock{
+	text-align:center;
+	margin-left:auto; 
+	margin-right:auto;
+}
 .aside-item .title {
     line-height: 24px;
     color: #232323;
