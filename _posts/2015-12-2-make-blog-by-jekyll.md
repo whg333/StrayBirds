@@ -167,7 +167,7 @@ comments: true
 >netdna.bootstrapcdn.com
 
 也是一直在做请求，查了一下才知道原来是[Font Awesome——最流行最全面最优秀的字体图标](http://www.58img.com/web/807)，博客文章的发布日期图标、分类图标等都是直接以形如
-**class="icon-calendar"**或**class="icon-folder-open"**的方式编写然后在界面上展示出来的，[具体支持的图标可看这里](http://dev.styler.jp/bootstrap-plus.html)
+**class="icon-calendar"**或**class="icon-folder-open"**的方式编写然后在界面上展示出来的，具体支持的图标可看[这里](http://dev.styler.jp/bootstrap-plus.html)、[这里](http://www.bootcss.com/p/font-awesome/)还有[这里](http://test.h-ui.net/Hui-3.7-iconfont.shtml)
 
 ### 3、简单SEO
 具体参考了[Github Pages + Jekyll搭建博客之SEO](http://zyzhang.github.io/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/)做的，包括：
