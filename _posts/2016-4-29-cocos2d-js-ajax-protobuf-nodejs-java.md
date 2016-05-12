@@ -35,7 +35,7 @@ Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列�
 ## 前后端使用Protobuf通信
 前面提到过Protobuf网络传输的场景，这里我们就来看看：前端（Cocos2d-JS/Ajax）如何使用Protobuf与后端（NodeJS/Java）通信？由于Protobuf能把proto文件定义的消息体转换为二进制字节流（byte[]），所以问题就变成：前端（Cocos2d-JS/Ajax）如何使用二进制与后端（NodeJS/Java）通信？
 
-网络通信一般分为2类：短连接和长连接。短连接一般说的是基于Http协议的请求/响应的连接；而长连接则是基于TCP/IP协议的3次握手不随意中断的连接；当然其实Http协议是基于TCP/IP协议的，只是请求/响应这种模式令其相较TCP/IP来说更“随意”中断了一点，但中断的后果是太浪费底层TCP/IP连接了，所以之后的Http1.1以及2.0为了减少浪费提出了Keep-Alive及多路复用等改进，甚至演化出了Html5的WebSocket协议这种基于Http协议的全双通长连接，发展趋势轨迹：TCP/IP长连接-->HTTP短连接-->WebSocket长连接
+网络通信一般分为2类：**短连接和长连接**。短连接一般说的是基于Http协议的请求/响应的连接；而长连接则是基于TCP/IP协议的3次握手不随意中断的连接；当然其实Http协议是基于TCP/IP协议的，只是请求/响应这种模式令其相较TCP/IP来说更“随意”中断了一点，但中断的后果是太浪费底层TCP/IP连接了，所以之后的Http1.1以及2.0为了减少浪费提出了Keep-Alive及多路复用等改进，甚至演化出了Html5的WebSocket协议这种基于Http协议升级版的全双通长连接，发展趋势轨迹：TCP/IP长连接 --> HTTP短连接 --> WebSocket长连接；这也令我想起后端服务器处理请求IO模型的进化轨迹：单线程 --> 多线程 --> 事件驱动单线程
 
 下面根据这2个分类连接说说基于JavaScript的前端（Cocos2d-JS/Ajax）如何用Protobuf与后端（NodeJS/Java）通信
 
@@ -75,14 +75,14 @@ if (xhr.overrideMimeType){
 #### 3. 前端使用[protobuf.js](https://github.com/dcodeIO/protobuf.js)来编解码Protobuf
 [protobuf.js](https://github.com/dcodeIO/protobuf.js)是GitHub上使用JavaScript实现Protobuf Buffer协议编解码的项目，这里我们使用它来作为前端JavaScript编解码Protobuf的利器
 
-##### 3.1 引入protobuf.js
-这里引入的[protobuf.js](https://github.com/dcodeIO/protobuf.js)版本为5.0.1，其中主要使用到了long.js、bytebuffer.js和protobuf.js这3个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
+##### 3.1 引入[protobuf.js](https://github.com/dcodeIO/protobuf.js)
+这里引入的protobuf.js版本为5.0.1，其中主要使用到了long.js、bytebuffer.js和protobuf.js这3个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
 > "protobufjs": "~5.0.1"
 
 然后使用
 > npm install
 
-即可完成对该依赖JS文件的下载，找到那3个文件拷贝到前端JS，然后在前端的index.html中引入protobuf.js:
+即可完成对该依赖的下载，在node_modules文件夹下找到那3个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入protobuf.js:
 
 ```java
 <script src="../protobuf/long.js"></script>
@@ -137,6 +137,43 @@ var testProto = new TestProto({
 xhr.send(testProto.toBuffer());
 ```
 
+这里因为浏览器会把Ajax返回的二进制数据当做文本数据，所以写个str2bytes方法把接受到的文本数据按字节一个个做与运算来还原成二进制byte:
+
+```java
+function str2bytes(str){
+    var bytes = [];
+    for (var i = 0, len = str.length; i < len; ++i) {
+        var c = str.charCodeAt(i);
+        var byte = c & 0xff;
+        bytes.push(byte);
+    }
+    return bytes;
+}
+```
+
 ### 长连接——WebSocket/SocketIO
+可以说整个互联网的普及依靠的是**浏览器和Http协议**这一最佳拍档的完美组合，老早前所说的上网冲浪就是打开浏览器，输入网页地址，然后等待浏览器渲染显示网页后阅览；但Http协议的一个短板就是不能即时刷新，即需要自己手动刷新页面，这也就是为什么贴吧/论坛有“F5已烂”这一说法，因为最新的信息不会自动呈现出来。
+
+虽然到了Web2.0时代由于Ajax的应用这一短板的用户体验有了大幅度的改善，但Ajax的本质依旧还是基于Http协议的短连接只不过是浏览器异步加载完成的响应信息而已；甚至还有使用“轮询”机制模仿长连接即时性的做法（即定时的用Ajax“拉取”服务器的信息来更新页面），但由于Http短连接本质就不是一个真实的双通道全开的“稳定”的连接，所以其即时性方面无论如何蹩脚的去模拟总会有或多或少的不爽（例如实现起来费劲麻烦等）。
+
+于是乎Html5的到来顺便携带了WebSocket：这一在Http协议基础上做出“升级”的“稳定”的长连接协议，其本质上是完全双通道全开，即服务器和客户端之间的通道随时可以进行互相推送消息。而SocketIO协议则是考虑到不是所有的浏览器都支持WebSocket，于是做了层WebSocket的封装，对于不支持WebSocket的浏览器其内部可能使用的是Ajax模拟的长连接。
+
+因为SocketIO封装了WebSocket，所以其API接口和WebSocket大同小异。下面就直接使用SocketIO来介绍如何整合Protobuf发送/接受二进制数据
+
+#### 引入[socket.io-client](https://github.com/socketio/socket.io-client)
+这里引入的socket.io-client版本为1.4.5，其中主要使用到了socket.io.js这个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
+> "socket.io" : "~1.4.5"
+
+然后使用
+> npm install
+
+即可完成对该依赖的下载，在node_modules文件夹下找到那个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入socket.io.js:
+
+```java
+<script type="text/javascript" src="static/js/lib/socket.io/socket.io.js"></script>
+```
+
+#### 使用socket.io.js
+
 
 （未完待续。。。）
