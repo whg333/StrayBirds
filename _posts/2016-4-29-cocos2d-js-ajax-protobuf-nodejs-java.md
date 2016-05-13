@@ -19,7 +19,7 @@ Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列�
 
 这里用Java代码（[GitHub上的代码在这里](https://github.com/whg333/protobuf-sample)）来解释说明前面介绍使用Protobuf的步骤：
 
-1. 编写proto文件在其中定义message消息体，这里我们定义了一个名为StudentProto的消息体:
+1. 编写proto文件在其中定义message消息体，这里我们定义了一个名为StudentProto的消息体
 
 ```java
 package tutorial;  
@@ -43,7 +43,7 @@ message StudentProto {
 
 其中**-I**代表Input输入proto文件的目录，而**--java_out**代表输出Java类的目录，最后的参数是一个通配符匹配输入proto文件的目录下的所有以.proto的文件，即达到批量生成Protobuf Java类的效果
 
-3. 然后我们编写与message消息体对应的Java对象，例如这里的Student类对应的就是StudentProto消息体，注意字段名和类型一一对应上了，其实Java字段名可以不必与消息体名称一样，但这么写也算是一种约定吧，一目了然嘛：
+3. 然后我们编写与message消息体对应的Java对象，例如这里的Student类对应的就是StudentProto消息体，注意字段名和类型一一对应上了，其实Java字段名可以不必与消息体名称一样，但这么写也算是一种约定吧，一目了然嘛
 
 ```java
 public class Student {
@@ -92,7 +92,7 @@ public class Student {
 }
 ```
 
-然后具体使用就像下面这样在byte[]和Java对象之间互相编解码转换了：
+然后具体使用就像下面这样在byte[]和Java对象之间互相编解码转换了
 
 ```java
 public static void main(String[] args) {
@@ -137,7 +137,7 @@ public static void main(String[] args) {
 无论是Cocos2d-JS还是Ajax，其进行HTTP通信都是基于JavaScript的XMLHttpRequest对象！所以只要搞清楚XMLHttpRequest对象如何与后端通信发送/接受二进制即可。使用如下几步来操作XMLHttpRequest发送Protobuf二进制数据：
 
 #### 1. 获取XMLHttpRequest
-Cocos2d-JS里就有XMLHttpRequest对象的支持，直接使用`cc.loader.getXMLHttpRequest()`即可获取到；而Ajax里面的XMLHttpRequest对象由于浏览器支持不同，可以使用如下代码获取：
+Cocos2d-JS里就有XMLHttpRequest对象的支持，直接使用`cc.loader.getXMLHttpRequest()`即可获取到；而Ajax里面的XMLHttpRequest对象由于浏览器支持不同，可以使用如下代码获取
 
 ```java
 function createXMLHttpRequest(){
@@ -176,7 +176,7 @@ if (xhr.overrideMimeType){
 然后使用
 > npm install
 
-即可完成对该依赖的下载，在node_modules文件夹下找到那3个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入protobuf.js:
+即可完成对该依赖的下载，在node_modules文件夹下找到那3个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入protobuf.js
 
 ```java
 <script src="../protobuf/long.js"></script>
@@ -190,7 +190,7 @@ if (xhr.overrideMimeType){
 ```
 
 #### 3.2 使用protobuf.js
-引入protobuf.js后就可以在JS代码中使用protobuf.js了，我们这里用于测试的TestProtobuf.proto文件如下：
+引入protobuf.js后就可以在JS代码中使用protobuf.js了，我们这里用于测试的TestProtobuf.proto文件如下
 
 ```java
 package TestProtobuf;
@@ -204,7 +204,7 @@ message TestProto{
 }
 ```
 
-然后在JS中加载该TestProtobuf.proto文件，并把该proto文件中定义的TestProto消息体赋值为JS局部变量TestProto：
+然后在JS中加载该TestProtobuf.proto文件，并把该proto文件中定义的TestProto消息体赋值为JS局部变量TestProto
 
 ```java
 var ProtoBuf = dcodeIO.ProtoBuf,
@@ -212,7 +212,7 @@ var ProtoBuf = dcodeIO.ProtoBuf,
     TestProto = TestProtobuf.TestProto;
 ```
 
-如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接受二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组（本质也是二进制字节流），接受的时候同样使用TestProto解码(decode)接受到的二进制数据：
+如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接受二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组（本质也是二进制字节流），接受的时候同样使用TestProto解码(decode)接受到的二进制数据
 
 ```java
 xhr.onreadystatechange = function(){
@@ -231,7 +231,7 @@ var testProto = new TestProto({
 xhr.send(testProto.toBuffer());
 ```
 
-这里因为浏览器会把Ajax返回的二进制数据当做文本数据，所以写个str2bytes方法把接受到的文本数据按字节一个个做与运算来还原成二进制byte:
+这里因为浏览器会把Ajax返回的二进制数据当做文本数据，所以写个str2bytes方法把接受到的文本数据按字节一个个做与运算来还原成二进制byte
 
 ```java
 function str2bytes(str){
@@ -261,14 +261,14 @@ function str2bytes(str){
 然后使用
 > npm install
 
-即可完成对该依赖的下载，在node_modules文件夹下找到那个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入socket.io.js:
+即可完成对该依赖的下载，在node_modules文件夹下找到那个JS文件拷贝到前端JS文件夹，然后在前端的index.html中引入socket.io.js
 
 ```java
 <script type="text/javascript" src="static/js/lib/socket.io/socket.io.js"></script>
 ```
 
 #### 使用SocketIO
-然后我们在JS代码中结合protobuf.js来使用socket.io.js来发送/接受二进制消息，这里的测试example.proto文件如下：
+然后我们在JS代码中结合protobuf.js来使用socket.io.js来发送/接受二进制消息，这里的测试example.proto文件如下
 
 ```java
 message Message {
@@ -276,7 +276,7 @@ message Message {
 }
 ```
 
-接着使用protobuf.js加载上面的example.proto文件，注意同前面的TestProtobuf.proto对比区别下有无`package`包声明其protobuf.js加载和构造消息体的不同之处：
+接着使用protobuf.js加载上面的example.proto文件，注意同前面的TestProtobuf.proto对比区别下有无`package`包声明其protobuf.js加载和构造消息体的不同之处
 
 ```java
 var ProtoBuf = dcodeIO.ProtoBuf;
@@ -315,7 +315,7 @@ function send() {
 ```
 
 #### 使用WebSocket
-下面使用WebSocket API重写上面SocketIO发送/接收Protobuf二进制的例子，可以看到其实是大同小异的，除了协议不是HTTP而是WebSocket，其API基本类似：
+下面使用WebSocket API重写上面SocketIO发送/接收Protobuf二进制的例子，可以看到其实是大同小异的，除了协议不是HTTP而是WebSocket，其API基本类似
 
 ```java
 // Connect to our server: node server.js
@@ -358,7 +358,7 @@ function send() {
 不得不说基于JavaScript语言的后端开发平台NodeJS确实很强大，它把浏览器Ajax这种事件驱动的异步编程模型的写法从前端照搬到了后端，其核心库完美的实现了很多底层模块并提供友好的对外API，令你启动一个HTTP服务器也就只需要写几行代码的事情，除此之外引入的模块化机制完美的避开了JS中常见的“命名污染”，还有类似Java中的Maven一样的依赖包管理工具——NPM，简直让你觉得真的是“处处都运行着JavaScript”，Java处处运行的梦想好像要被JavaScript替代了似的
 
 #### NodeJS使用protobuf.js处理Protobuf
-由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用protobuf.js来处理Protobuf，且使用了前面提到的TestProtobuf.proto文件：
+由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用protobuf.js来处理Protobuf，且使用了前面提到的TestProtobuf.proto文件
 
 ```java
 var ProtoBuf = require("protobufjs");
@@ -368,7 +368,7 @@ var TestProtobuf = ProtoBuf.loadProtoFile(protobufDir+"TestProtobuf.proto").buil
 ```
 
 #### NodeJS启动HTTP服务并接受/发送二进制数据
-在NodeJS中真的是就几句代码就启动HTTP服务器了：
+在NodeJS中真的是就几句代码就启动HTTP服务器了
 
 ```java
 var http = require("http");
@@ -382,7 +382,7 @@ server.listen(3000);
 
 但这是只一个啥事都没干的HTTP服务器，真正的HTTP服务器至少能提供静态文件浏览服务，在NodeJS上这也需要我们自己去实现，写个serveStatic方法：其原理是根据请求路径去读取磁盘上的文件，如果存在的话读取成功后返回给前端，不存在就报404错误，为了避免每次都从磁盘读取我们还可以加入缓存
 
-除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接受二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了bufferhelper库简化收集网络二进制数据的过程，具体代码如下：
+除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接受二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了bufferhelper库简化收集网络二进制数据的过程，具体代码如下
 
 ```java
 var server = http.createServer(function(request, response){
@@ -462,7 +462,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 </dependency>
 ```
 
-然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名：
+然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名
 
 ```java
 <!-- 引入上下文配置文件 -->
@@ -490,7 +490,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 </servlet-mapping>
 ```
 
-关键的部分在mvc.xml配置中，这里使用mvc:的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码：
+关键的部分在mvc.xml配置中，这里使用mvc:的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码
 
 ```java
 <!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
@@ -506,7 +506,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 </mvc:annotation-driven>
 ```
 
-最后在SpringMVC的Controller中可使用RequestEntity直接操作传递过来的TestProto，并使用ResponseEntity把TestProto作为响应返回去给HTTP客户端：
+最后在SpringMVC的Controller中可使用RequestEntity直接操作传递过来的TestProto，并使用ResponseEntity把TestProto作为响应返回去给HTTP客户端
 
 ```java
 @Controller
