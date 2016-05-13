@@ -417,5 +417,116 @@ var server = http.createServer(function(request, response){
 可见在收集完二进制数据后的end回调方法中使用了TestProto来解码二进制，然后再原封不动的转换为Buffer通过response的end方法作为响应返回给HTTP客户端
 
 #### Java SpringMVC
+Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以需要确保pom.xml文件中的Spring核心包以及SpringMVC包的版本都是4.1.6+，当然也需要确保依赖了Protobuf的Java包
+
+```java
+<!-- springframework 4.0.7 RELEASE -->
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-context</artifactId>
+	<version>4.1.7.RELEASE</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-tx</artifactId>
+	<version>4.1.7.RELEASE</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-jdbc</artifactId>
+	<version>4.1.7.RELEASE</version>
+</dependency>
+ 
+<!-- spring mvc -->
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-webmvc</artifactId>
+	<version>4.1.7.RELEASE</version>
+</dependency>
+<dependency>
+	<groupId>commons-fileupload</groupId>
+	<artifactId>commons-fileupload</artifactId>
+	<version>1.3.1</version>
+</dependency>
+
+<!-- protobuf -->
+<dependency>
+	<groupId>com.google.code</groupId>
+	<artifactId>protobuf-java</artifactId>
+	<version>2.4.0a</version>
+</dependency>
+<dependency>
+    <groupId>com.googlecode.protobuf-java-format</groupId>
+    <artifactId>protobuf-java-format</artifactId>
+    <version>1.2</version>
+</dependency>
+```
+
+然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名：
+
+```java
+<!-- 引入上下文配置文件   -->
+<context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>classpath:applicationContext.xml</param-value>
+</context-param>
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+<servlet>
+	<servlet-name>spring-web</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	<init-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/mvc.xml</param-value>
+	</init-param>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+	<servlet-name>spring-web</servlet-name>
+	<url-pattern>*.why</url-pattern>
+</servlet-mapping>
+```
+
+关键的部分在mvc.xml配置中，这里使用mvc:的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码：
+
+```java
+<!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
+<context:component-scan base-package="com.why.game.web.*"/>
+
+<mvc:interceptors>
+	<bean class="com.why.game.web.interceptor.ControllerInterceptor" />
+</mvc:interceptors>
+<mvc:annotation-driven>  
+    <mvc:message-converters>  
+        <bean class="org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter"/>  
+    </mvc:message-converters>  
+</mvc:annotation-driven>
+```
+
+最后在SpringMVC的Controller中可使用RequestEntity直接操作传递过来的TestProto，并使用ResponseEntity把TestProto作为响应返回去给HTTP客户端：
+
+```java
+@Controller
+@RequestMapping("/")
+public class TestController {
+
+	@RequestMapping(value="/protobuf")
+	@ResponseBody
+	public ResponseEntity<TestProto> protobuf(RequestEntity<TestProto> requestProto){
+		TestProto testProto = requestProto.getBody();
+		String s = new String(testProto.toByteArray());
+		System.out.println(s);
+		System.out.println(testProto);
+		HttpServiceCaller.printProtoStr(s);
+		return ResponseEntity.ok(testProto);
+	}
+
+}
+```
+
+### 长连接——SocketIO/WebSocket
 
 （未完待续。。。）
