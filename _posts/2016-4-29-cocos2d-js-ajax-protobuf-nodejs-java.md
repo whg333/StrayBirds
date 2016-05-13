@@ -490,11 +490,11 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 </servlet-mapping>
 ```
 
-关键的部分在mvc.xml配置中，这里使用mvc:的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码
+关键的部分在mvc.xml配置中，这里使用mvc:annotation-driven的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码
 
 ```java
 <!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
-<context:component-scan base-package="com.why.game.web.*"/>
+<context:component-scan base-package="com.why.game.web.*" />
 
 <mvc:interceptors>
 	<bean class="com.why.game.web.interceptor.ControllerInterceptor" />
