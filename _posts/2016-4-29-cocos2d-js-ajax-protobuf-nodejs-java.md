@@ -465,7 +465,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名：
 
 ```java
-<!-- 引入上下文配置文件   -->
+<!-- 引入上下文配置文件 -->
 <context-param>
 	<param-name>contextConfigLocation</param-name>
 	<param-value>classpath:applicationContext.xml</param-value>
