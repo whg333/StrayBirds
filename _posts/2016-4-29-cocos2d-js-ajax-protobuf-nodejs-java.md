@@ -465,6 +465,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名
 
 ```java
+<!-- 引入上下文配置文件 -->
 <context-param>
 	<param-name>contextConfigLocation</param-name>
 	<param-value>classpath:applicationContext.xml</param-value>
@@ -492,6 +493,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 关键的部分在mvc.xml配置中，这里使用mvc:annotation-driven的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码
 
 ```java
+<!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
 <context:component-scan base-package="com.why.game.web.*" />
 
 <mvc:interceptors>
