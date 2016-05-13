@@ -17,7 +17,7 @@ Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列�
 2. 利用Protobuf对应Java语言的protoc.exe生成工具去根据第1步定义的proto文件生成对应的Protobu编解码Java类
 3. 使用第2步生成的Protobuf编解码Java类对Java对象做编解码的工作，例如编码Java对象为byte[]或者解码byte[]为Java对象
 
-这里用Java代码来解释说明前面介绍使用Protobuf的步骤：
+这里用Java代码（[GitHub上的代码在这里](https://github.com/whg333/protobuf-sample)）来解释说明前面介绍使用Protobuf的步骤：
 
 1. 编写proto文件在其中定义message消息体，这里我们定义了一个名为StudentProto的消息体:
 
