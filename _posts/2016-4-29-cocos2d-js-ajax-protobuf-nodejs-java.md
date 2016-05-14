@@ -17,7 +17,7 @@ Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列�
 2. 利用Protobuf对应Java语言的protoc.exe生成工具去根据第1步定义的proto文件生成对应的Protobu编解码Java类
 3. 使用第2步生成的Protobuf编解码Java类对Java对象做编解码的工作，例如编码Java对象为byte[]或者解码byte[]为Java对象
 
-这里用Java代码（[GitHub上的代码在这里](https://github.com/whg333/protobuf-sample)）来解释说明前面介绍使用Protobuf的步骤：
+这里用Java代码举例（[GitHub上的代码在这里](https://github.com/whg333/protobuf-sample)）来解释说明前面介绍使用Protobuf的步骤：
 
 1. 编写proto文件在其中定义message消息体，这里我们定义了一个名为StudentProto的消息体
 
@@ -134,7 +134,7 @@ public static void main(String[] args) {
 下面根据这2个分类连接说说基于JavaScript的前端（Cocos2d-JS/Ajax）如何用Protobuf与后端（NodeJS/Java）通信
 
 ### 短连接——HTTP
-无论是Cocos2d-JS还是Ajax，其进行HTTP通信都是基于JavaScript的XMLHttpRequest对象！所以只要搞清楚XMLHttpRequest对象如何与后端通信发送/接受二进制即可。使用如下几步来操作XMLHttpRequest发送Protobuf二进制数据：
+无论是Cocos2d-JS还是Ajax，其进行HTTP通信都是基于JavaScript的XMLHttpRequest对象！所以只要搞清楚XMLHttpRequest对象如何与后端通信发送/接收二进制即可。使用如下几步来操作XMLHttpRequest发送Protobuf二进制数据：
 
 #### 1. 获取XMLHttpRequest
 Cocos2d-JS里就有XMLHttpRequest对象的支持，直接使用`cc.loader.getXMLHttpRequest()`即可获取到；而Ajax里面的XMLHttpRequest对象由于浏览器支持不同，可以使用如下代码获取
@@ -149,7 +149,7 @@ function createXMLHttpRequest(){
 }
 ```
 
-#### 2. 设置XMLHttpRequest头部支持Protobuf协议发送/接受
+#### 2. 设置XMLHttpRequest头部支持Protobuf协议
 无论是Cocos2d-JS还是Ajax，其XMLHttpRequest对象本质都一样，所以如下open(打开)url以及setRequestHeader(设置请求头部)等代码都是通用的
 
 ```java
@@ -169,7 +169,7 @@ if (xhr.overrideMimeType){
 #### 3. 前端使用[protobuf.js](https://github.com/dcodeIO/protobuf.js)来编解码Protobuf
 [protobuf.js](https://github.com/dcodeIO/protobuf.js)是GitHub上使用JavaScript实现Protobuf Buffer协议编解码的项目，这里我们使用它来作为前端JavaScript编解码Protobuf的利器
 
-##### 3.1 引入[protobuf.js](https://github.com/dcodeIO/protobuf.js)
+##### 3.1 引入protobuf.js
 这里引入的protobuf.js版本为5.0.1，其中主要使用到了long.js、bytebuffer.js和protobuf.js这3个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
 > "protobufjs": "~5.0.1"
 
@@ -212,7 +212,7 @@ var ProtoBuf = dcodeIO.ProtoBuf,
     TestProto = TestProtobuf.TestProto;
 ```
 
-如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接受二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组（本质也是二进制字节流），接受的时候同样使用TestProto解码(decode)接受到的二进制数据
+如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接收二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组（本质也是二进制字节流），接收的时候同样使用TestProto解码(decode)接收到的二进制数据
 
 ```java
 xhr.onreadystatechange = function(){
@@ -231,7 +231,7 @@ var testProto = new TestProto({
 xhr.send(testProto.toBuffer());
 ```
 
-这里因为浏览器会把Ajax返回的二进制数据当做文本数据，所以写个str2bytes方法把接受到的文本数据按字节一个个做与运算来还原成二进制byte
+这里因为浏览器会把Ajax返回的二进制数据当做文本数据，所以写个str2bytes方法把接收到的文本数据按字节一个个做与运算来还原成二进制byte
 
 ```java
 function str2bytes(str){
@@ -252,10 +252,10 @@ function str2bytes(str){
 
 于是乎Html5的到来顺便携带了WebSocket：这一在HTTP协议基础上做出“升级”的“稳定”的长连接协议，其本质上是完全双通道全开，即服务器和客户端之间的通道随时可以进行互相推送消息。而SocketIO协议则是考虑到不是所有的浏览器都支持WebSocket，于是做了层WebSocket的封装，对于不支持WebSocket的浏览器其内部可能使用的是Ajax模拟的长连接。
 
-因为SocketIO封装了WebSocket，所以其API接口和WebSocket大同小异。下面分别介绍使用SocketIO/WebSocket来整合Protobuf发送/接受二进制数据的步骤
+因为SocketIO封装了WebSocket，所以其API接口和WebSocket大同小异。下面分别介绍使用SocketIO/WebSocket来整合Protobuf发送/接收二进制数据的步骤
 
 #### 引入SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)
-这里引入的socket.io-client版本为1.4.5，其中主要使用到了socket.io.js这个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
+[socket.io-client](https://github.com/socketio/socket.io-client)是GitHub上使用JavaScript实现SocketIO协议的客户端，这里引入的socket.io-client版本为1.4.5，其中主要使用到了socket.io.js这个JS文件，如果使用NodeJS的话，直接在`package.json`添加dependencies依赖配置
 > "socket.io" : "~1.4.5"
 
 然后使用
@@ -267,8 +267,8 @@ function str2bytes(str){
 <script type="text/javascript" src="static/js/lib/socket.io/socket.io.js"></script>
 ```
 
-#### 使用SocketIO
-然后我们在JS代码中结合protobuf.js来使用socket.io.js来发送/接受二进制消息，这里的测试example.proto文件如下
+#### 使用SocketIO客户端
+然后我们在JS代码中结合protobuf.js来使用socket.io.js来发送/接收二进制消息，这里的测试example.proto文件如下
 
 ```java
 message Message {
@@ -354,11 +354,13 @@ function send() {
 这里的后端使用NodeJS和Java实现Protobuf二进制数据的发送/接收，且同样看看区分短连接和长连接的实现
 
 ### 短连接——HTTP
+在原生的NodeJS中可以自己编写代码开启一个简单的HTTP服务器，并自定义实现对HTTP请求的处理，当然你也可以使用一些现成的Web MVC框架例如Express来简化开发；而在Java中常见的还是使用Tomcat/JBoss这类已经久经沙场的Web容器比较方便，再配合上SpringMVC/Struts2等Web MVC框架的使用话，可以让Java Web开发人员把精力集中在业务逻辑处理方面；
+
 #### NodeJS
 不得不说基于JavaScript语言的后端开发平台NodeJS确实很强大，它把浏览器Ajax这种事件驱动的异步编程模型的写法从前端照搬到了后端，其核心库完美的实现了很多底层模块并提供友好的对外API，令你启动一个HTTP服务器也就只需要写几行代码的事情，除此之外引入的模块化机制完美的避开了JS中常见的“命名污染”，还有类似Java中的Maven一样的依赖包管理工具——NPM，简直让你觉得真的是“处处都运行着JavaScript”，Java处处运行的梦想好像要被JavaScript替代了似的
 
 #### NodeJS使用protobuf.js处理Protobuf
-由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用protobuf.js来处理Protobuf，且使用了前面提到的TestProtobuf.proto文件
+由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用protobuf.js来处理Protobuf，且使用了前面提到的TestProtobuf.proto
 
 ```java
 var ProtoBuf = require("protobufjs");
@@ -367,7 +369,7 @@ var TestProtobuf = ProtoBuf.loadProtoFile(protobufDir+"TestProtobuf.proto").buil
     TestProto = TestProtobuf.TestProto;
 ```
 
-#### NodeJS启动HTTP服务并接受/发送二进制数据
+#### NodeJS启动HTTP服务并接收/发送二进制数据
 在NodeJS中真的是就几句代码就启动HTTP服务器了
 
 ```java
@@ -382,7 +384,7 @@ server.listen(3000);
 
 但这是只一个啥事都没干的HTTP服务器，真正的HTTP服务器至少能提供静态文件浏览服务，在NodeJS上这也需要我们自己去实现，写个serveStatic方法：其原理是根据请求路径去读取磁盘上的文件，如果存在的话读取成功后返回给前端，不存在就报404错误，为了避免每次都从磁盘读取我们还可以加入缓存
 
-除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接受二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了bufferhelper库简化收集网络二进制数据的过程，具体代码如下
+除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接收二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了bufferhelper库简化收集网络二进制数据的过程，具体代码如下
 
 ```java
 var server = http.createServer(function(request, response){
@@ -528,5 +530,187 @@ public class TestController {
 ```
 
 ### 长连接——SocketIO/WebSocket
+这里以SocketIO为例来看看其在NodeJS和Java中的使用，其实WebSocket的使用方法也是大同小异，仅仅是API略微差别，但思想步骤是一样适用的
+
+#### NodeJS中的SocketIO
+与前面介绍的SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)相对应的NodeJS服务端是[socket.io](https://github.com/socketio/socket.io)，如果你已经在NodeJS的`package.json`添加了socket.io 1.4.5版的依赖并install了，就可以直接在NodeJS中使用了
+
+```java
+var ProtoBuf = require("protobufjs");
+var socketio = require("socket.io");
+
+// Initialize from .proto file
+var builder = ProtoBuf.loadProtoFile(path.join(__dirname, "www", "example.proto")),
+    Message = builder.build("Message");
+
+// SocketIO adapter
+var io = socketio.listen(server);
+io.set("log level", 1);
+io.sockets.on("connection", function(socket){
+    console.log(socket.id+" connecting...");
+    socket.on("disconnect", function() {
+        console.log("WebSocket disconnected");
+    });
+    socket.on("message", function(data) {
+        try {
+            // Decode the Message
+            var msg = Message.decode(data);
+            console.log("Received: "+msg.text);
+            // Transform the text to upper case
+            msg.text = msg.text.toUpperCase();
+            // Re-encode it and send it back
+            socket.send(msg.toBuffer());
+			//socket.emit('message', msg.toBuffer());
+            console.log("Sent: "+msg.text);
+        } catch (err) {
+            console.log("Processing failed:", err);
+        }
+    });
+});
+```
+
+注意上面的代码先使用require引入了Protobuf和SocketIO模块，然后初始化Protobuf的消息体并让SocketIO启动监听，这里SocketIO监听的server其实就是NodeJS创建的HTTP服务器，因为在NodeJS里面HTTP服务器和SocketIO服务器共用同一个端口；接下来就是Protobuf对接收到的二进制数据进行解码打印，然后把字母转换为大写后再编码发送出去
+
+#### Java中的SocketIO
+在Java中我们使用了GitHub上一个名为[netty-socketio](https://github.com/mrniko/netty-socketio)的项目，由名字可看出其是在Netty框架基础上实现的SocketIO协议，并提供了事件驱动注册监听器的写法，当你从NodeJS转换代码过来时会发现其写法大同小异：即NodeJS使用on方法来注册监听事件，netty-socketio中使用addEventListener方法来实现；NodeJS使用emit触发事件，而netty-socketio中使用sendEvent来触发事件等
+
+首先在pom.xml中加入netty-socketio的依赖以及Protobuf的依赖：
+
+```java
+<dependency>
+	<groupId>com.corundumstudio.socketio</groupId>
+	<artifactId>netty-socketio</artifactId>
+	<version>1.7.11-SNAPSHOT</version>
+</dependency>
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-simple</artifactId>
+	<version>1.7.7</version>
+</dependency>
+
+<!-- protobuf -->
+<dependency>
+	<groupId>com.google.code</groupId>
+	<artifactId>protobuf-java</artifactId>
+	<version>2.4.0a</version>
+</dependency>
+<dependency>
+    <groupId>com.googlecode.protobuf-java-format</groupId>
+    <artifactId>protobuf-java-format</artifactId>
+    <version>1.2</version>
+</dependency>
+```
+
+接下来就是写一个实现了ConnectListener和DisconnectListener这2个分别代表连接监听与断开监听的接口的SocketIO服务器类，然后该类内部再使用addEventListener来监听感兴趣的事件，对应上面NodeJS SocketIO的Java SocketIO服务器类如下
+
+```java
+public class EchoUpperCaseProtoServer implements ConnectListener, DisconnectListener{
+	
+	private static final String HOST = "localhost";
+	private static final int PORT = 3001;
+	
+	private final SocketIOServer server;
+	
+	public EchoUpperCaseProtoServer(){
+        server = new SocketIOServer(config());
+	}
+	
+	private Configuration config(){
+	    Configuration config = new Configuration();
+        config.setHostname(HOST);
+        config.setPort(PORT);
+        config.setMaxFramePayloadLength(1024 * 1024);
+        config.setMaxHttpContentLength(1024 * 1024);
+        return config;
+	}
+	
+	public void start(){
+        server.addConnectListener(this);
+        server.addDisconnectListener(this);
+        
+        server.addEventListener("message", byte[].class, new DataListener<byte[]>() {
+            @Override
+            public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
+            	Message message = Message.parse(data);
+            	System.out.println("Received: "+message.getText());
+                // Transform the text to upper case
+            	message.setText(message.getText().toUpperCase());
+                // Re-encode it and send it back
+            	client.sendEvent("message", message.toByteArray());
+                System.out.println("Sent: "+message.getText());
+            }
+        });
+        
+        server.start();
+        System.out.println("\n------ "+this.getClass().getSimpleName()+"start on "+PORT+" ------\n");
+	}
+	
+	public void stop(){
+	    server.stop();
+	}
+
+	@Override
+	public void onConnect(SocketIOClient client) {
+		System.out.println(client.getSessionId()+" connecting...");
+	}
+	
+	@Override
+	public void onDisconnect(SocketIOClient client) {
+		System.out.println(client.getSessionId()+" disconnecting...");
+	}
+	
+	public static void main(String[] args){
+    	new EchoUpperCaseProtoServer().start();
+    }
+
+}
+```
+
+可见其接收/发送Protobuf二进制的代码是相当类似的，然后封装的Message.java如下
+
+```java
+public class Message {
+
+	private String text;
+	
+	public Message() {
+		
+	}
+
+	public Message(Example.Message proto){
+		text = proto.getText();
+	}
+	
+	public byte[] toByteArray(){
+		Example.Message.Builder builder = Example.Message.newBuilder();
+		builder.setText(text);
+		return builder.build().toByteArray();
+	}
+	
+	public static Message parse(byte[] bytes){
+		Example.Message proto = null;
+		try {
+			proto = Example.Message.parseFrom(bytes);
+		} catch (InvalidProtocolBufferException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+		return new Message(proto);
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+}
+```
+
+
+
+## 参考
+* [XMLHttpRequest Level 2 使用指南](http://www.ruanyifeng.com/blog/2012/09/xmlhttprequest_level_2.html)
 
 （未完待续。。。）
