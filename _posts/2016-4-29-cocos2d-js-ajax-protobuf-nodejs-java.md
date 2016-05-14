@@ -384,7 +384,7 @@ server.listen(3000);
 
 但这是只一个啥事都没干的HTTP服务器，真正的HTTP服务器至少能提供静态文件浏览服务，在NodeJS上这也需要我们自己去实现，写个serveStatic方法：其原理是根据请求路径去读取磁盘上的文件，如果存在的话读取成功后返回给前端，不存在就报404错误，为了避免每次都从磁盘读取我们还可以加入缓存
 
-除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接收二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了bufferhelper库简化收集网络二进制数据的过程，具体代码如下
+除了处理静态文件外，我们的重点还是放在NodeJS使用Protobuf发送/接收二进制数据：当我们识别一个来自客户端的请求参数是二进制数据时(这里是请求方法是POST且包含protobuf关键字)，我们需要先收集完全部的二进制数据后方可解析，由于网络的传输可能不是一次到位全部传输过来，而是一段段(chunk)的过来，所以就有个收集的过程，这里使用了[bufferhelper](https://github.com/JacksonTian/bufferhelper)库简化收集网络二进制数据的过程，具体代码如下
 
 ```java
 var server = http.createServer(function(request, response){
@@ -416,7 +416,7 @@ var server = http.createServer(function(request, response){
 });
 ```
 
-可见在收集完二进制数据后的end回调方法中使用了TestProto来解码二进制，然后再原封不动的转换为Buffer通过response的end方法作为响应返回给HTTP客户端
+可见在收集完二进制数据后的end回调方法中使用了TestProto来解码二进制，然后再原封不动的转换为Buffer后通过response的end方法作为响应返回给HTTP客户端
 
 #### Java SpringMVC
 Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以需要确保pom.xml文件中的Spring核心包以及SpringMVC包的版本都是4.1.6+，当然也需要确保依赖了Protobuf的Java包
@@ -532,8 +532,11 @@ public class TestController {
 ### 长连接——SocketIO/WebSocket
 这里以SocketIO为例来看看其在NodeJS和Java中的使用，其实WebSocket的使用方法也是大同小异，仅仅是API略微差别，但思想步骤是一样适用的
 
-#### NodeJS中的SocketIO
-与前面介绍的SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)相对应的NodeJS服务端是[socket.io](https://github.com/socketio/socket.io)，如果你已经在NodeJS的`package.json`添加了socket.io 1.4.5版的依赖并install了，就可以直接在NodeJS中使用了
+#### NodeJS中的SocketIO库
+与前面介绍的SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)相对应的NodeJS服务端是[socket.io](https://github.com/socketio/socket.io)，我们需要在`package.json`添加dependencies依赖配置
+> "socket.io" : "~1.4.5"
+
+并使用npm install下载安装后，就可以直接在NodeJS中使用socket.io库来构建了SocketIO服务器了
 
 ```java
 var ProtoBuf = require("protobufjs");
@@ -570,6 +573,41 @@ io.sockets.on("connection", function(socket){
 ```
 
 注意上面的代码先使用require引入了Protobuf和SocketIO模块，然后初始化Protobuf的消息体并让SocketIO启动监听，这里SocketIO监听的server其实就是NodeJS创建的HTTP服务器，因为在NodeJS里面HTTP服务器和SocketIO服务器共用同一个端口；接下来就是Protobuf对接收到的二进制数据进行解码打印，然后把字母转换为大写后再编码发送出去
+
+#### NodeJS中的WebSocket库
+在NodeJS中使用WebSocket最简便的方式是使用GitHub上名为[ws](https://github.com/websockets/ws)的项目，其号称可能是NodeJS里面速度最快的WebSocket库，我们可以在`package.json`添加dependencies依赖配置
+> "ws": "~0.4"
+
+并使用npm install下载安装后，就可以在NodeJS里使用ws库来构建WebSocket服务器了，实现与上面SokcetIO相同逻辑的代码如下，可见WebSocket与SocketIO的API是大同小异的
+
+```java
+// WebSocket adapter
+var wss = new ws.Server({server: server});
+wss.on("connection", function(socket) {
+    console.log("New WebSocket connection");
+    socket.on("close", function() {
+        console.log("WebSocket disconnected");
+    });
+    socket.on("message", function(data, flags) {
+        if (flags.binary) {
+            try {
+                // Decode the Message
+                var msg = Message.decode(data);
+                console.log("Received: "+msg.text);
+                // Transform the text to upper case
+                msg.text = msg.text.toUpperCase();
+                // Re-encode it and send it back
+                socket.send(msg.toBuffer());
+                console.log("Sent: "+msg.text);
+            } catch (err) {
+                console.log("Processing failed:", err);
+            }
+        } else {
+            console.log("Not binary data");
+        }
+    });
+});
+```
 
 #### Java中的SocketIO
 在Java中我们使用了GitHub上一个名为[netty-socketio](https://github.com/mrniko/netty-socketio)的项目，由名字可看出其是在Netty框架基础上实现的SocketIO协议，并提供了事件驱动注册监听器的写法，当你从NodeJS转换代码过来时会发现其写法大同小异：即NodeJS使用on方法来注册监听事件，netty-socketio中使用addEventListener方法来实现；NodeJS使用emit触发事件，而netty-socketio中使用sendEvent来触发事件等
@@ -666,7 +704,7 @@ public class EchoUpperCaseProtoServer implements ConnectListener, DisconnectList
 }
 ```
 
-可见其接收/发送Protobuf二进制的代码是相当类似的，然后封装的Message.java如下
+可见其接收/发送Protobuf二进制的代码与NodeJS相比其实是相当类似的，然后封装的Message.java如下
 
 ```java
 public class Message {
