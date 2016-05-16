@@ -418,7 +418,7 @@ var server = http.createServer(function(request, response){
 
 可见在收集完二进制数据后的end回调方法中使用了TestProto来解码二进制，然后再原封不动的转换为Buffer后通过response的end方法作为响应返回给HTTP客户端
 
-#### Java SpringMVC
+#### Java SpringMVC与Protobuf
 Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以需要确保pom.xml文件中的Spring核心包以及SpringMVC包的版本都是4.1.6+，当然也需要确保依赖了Protobuf的Java包
 
 ```java
@@ -536,7 +536,7 @@ public class TestController {
 与前面介绍的SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)相对应的NodeJS服务端是[socket.io](https://github.com/socketio/socket.io)，我们需要在`package.json`添加dependencies依赖配置
 > "socket.io" : "~1.4.5"
 
-并使用npm install下载安装后，就可以直接在NodeJS中使用socket.io库来构建了SocketIO服务器了
+并使用npm install下载安装后，就可以直接在NodeJS中使用socket.io库来构建了SocketIO服务器了，下面实现一个简单的业务逻辑：把接收到的数据转换成大写后再发送回去给客户端
 
 ```java
 var ProtoBuf = require("protobufjs");
@@ -578,7 +578,7 @@ io.sockets.on("connection", function(socket){
 在NodeJS中使用WebSocket最简便的方式是使用GitHub上名为[ws](https://github.com/websockets/ws)的项目，其号称可能是NodeJS里面速度最快的WebSocket库，我们可以在`package.json`添加dependencies依赖配置
 > "ws": "~0.4"
 
-并使用npm install下载安装后，就可以在NodeJS里使用ws库来构建WebSocket服务器了，实现与上面SokcetIO相同逻辑的代码如下，可见WebSocket与SocketIO的API是大同小异的
+并使用npm install下载安装后，就可以在NodeJS里使用ws库来构建WebSocket服务器了，实现与上面SokcetIO服务器相同逻辑的代码如下，可见WebSocket与SocketIO的API是大同小异的
 
 ```java
 // WebSocket adapter
@@ -609,7 +609,7 @@ wss.on("connection", function(socket) {
 });
 ```
 
-#### Java中的SocketIO
+#### Java中的SocketIO库
 在Java中我们使用了GitHub上一个名为[netty-socketio](https://github.com/mrniko/netty-socketio)的项目，由名字可看出其是在Netty框架基础上实现的SocketIO协议，并提供了事件驱动注册监听器的写法，当你从NodeJS转换代码过来时会发现其写法大同小异：即NodeJS使用on方法来注册监听事件，netty-socketio中使用addEventListener方法来实现；NodeJS使用emit触发事件，而netty-socketio中使用sendEvent来触发事件等
 
 首先在pom.xml中加入netty-socketio的依赖以及Protobuf的依赖：
@@ -639,17 +639,17 @@ wss.on("connection", function(socket) {
 </dependency>
 ```
 
-接下来就是写一个实现了ConnectListener和DisconnectListener这2个分别代表连接监听与断开监听的接口的SocketIO服务器类，然后该类内部再使用addEventListener来监听感兴趣的事件，对应上面NodeJS SocketIO的Java SocketIO服务器类如下
+接下来就是写一个实现了ConnectListener和DisconnectListener这2个分别代表连接监听与断开监听的接口的SocketIO服务器类，然后该类内部再使用addEventListener来监听感兴趣的事件，对应上面NodeJS SocketIO服务器逻辑的Java SocketIO服务器类如下
 
 ```java
-public class EchoUpperCaseProtoServer implements ConnectListener, DisconnectListener{
+public class SocketIOProtoServer implements ConnectListener, DisconnectListener{
 	
 	private static final String HOST = "localhost";
 	private static final int PORT = 3001;
 	
 	private final SocketIOServer server;
 	
-	public EchoUpperCaseProtoServer(){
+	public SocketIOProtoServer(){
         server = new SocketIOServer(config());
 	}
 	
@@ -698,7 +698,7 @@ public class EchoUpperCaseProtoServer implements ConnectListener, DisconnectList
 	}
 	
 	public static void main(String[] args){
-    	new EchoUpperCaseProtoServer().start();
+    	new SocketIOProtoServer().start();
     }
 
 }
@@ -746,10 +746,124 @@ public class Message {
 }
 ```
 
-#### Java中的WebSocket
+#### Java中的WebSocket库
+此处我们基于[Netty](https://github.com/netty/netty)的WebSocket包实现来看看上面SocketIO服务类在Netty中长什么样，其中大部分代码均源自Netty自带的example包里的；首先看看Netty中的WebSocketServer
 
+```java
+public final class WebSocketServer {
+
+    static final boolean SSL = System.getProperty("ssl") != null;
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "8443" : "3000"));
+
+    public static void main(String[] args) throws Exception {
+        // Configure SSL.
+        final SslContext sslCtx;
+        if (SSL) {
+            SelfSignedCertificate ssc = new SelfSignedCertificate();
+            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
+        } else {
+            sslCtx = null;
+        }
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+             .channel(NioServerSocketChannel.class)
+             .handler(new LoggingHandler(LogLevel.INFO))
+             .childHandler(new WebSocketServerInitializer(sslCtx));
+
+            Channel ch = b.bind(PORT).sync().channel();
+
+            System.out.println("Open your web browser and navigate to " +
+                    (SSL? "https" : "http") + "://127.0.0.1:" + PORT + '/');
+
+            ch.closeFuture().sync();
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
+    }
+}
+```
+
+如下是WebSocketServerInitializer，里面设置了各种HTTP解码器，然后还有由HTTP协议升级到WebSocket协议的处理器类WebSocketServerProtocolHandler，最后是WebSocket帧处理器类WebSocketFrameHandler
+
+```java
+public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
+
+    private static final String WEBSOCKET_PATH = "/ws";
+
+    private final SslContext sslCtx;
+
+    public WebSocketServerInitializer(SslContext sslCtx) {
+        this.sslCtx = sslCtx;
+    }
+
+    @Override
+    public void initChannel(SocketChannel ch) throws Exception {
+        ChannelPipeline pipeline = ch.pipeline();
+        if (sslCtx != null) {
+            pipeline.addLast(sslCtx.newHandler(ch.alloc()));
+        }
+        pipeline.addLast(new HttpServerCodec());
+        pipeline.addLast(new HttpObjectAggregator(65536));
+        pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true));
+        pipeline.addLast(new WebSocketFrameHandler());
+    }
+}
+```
+
+最后看看实现与之前的服务器业务逻辑（把接收到的数据转换成大写后再发送回去给客户端）相同的WebSocketFrameHandler类的写法：
+
+```java
+public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketFrameHandler.class);
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
+        // ping and pong frames already handled
+
+        if (frame instanceof TextWebSocketFrame) {
+            // Send the uppercase string back.
+            String request = ((TextWebSocketFrame) frame).text();
+            logger.info("{} received {}", ctx.channel(), request);
+            ctx.channel().writeAndFlush(new TextWebSocketFrame(request.toUpperCase(Locale.US)));
+        } else if(frame instanceof BinaryWebSocketFrame){
+        	ByteBuf byteBuf = ((BinaryWebSocketFrame) frame).content();
+        	byte[] data = new byte[byteBuf.capacity()];
+        	byteBuf.readBytes(data);
+        	Message message = Message.parse(data);
+        	System.out.println("Received: "+message.getText());
+            // Transform the text to upper case
+        	message.setText(message.getText().toUpperCase());
+            // Re-encode it and send it back
+        	byte[] bytes = message.toByteArray();
+        	ByteBuf payload = ctx.alloc().buffer(bytes.length);
+        	payload.writeBytes(bytes);
+        	ctx.channel().writeAndFlush(new BinaryWebSocketFrame(payload));
+            System.out.println("Sent: "+message.getText());
+        } else {
+            String message = "unsupported frame type: " + frame.getClass().getName();
+            throw new UnsupportedOperationException(message);
+        }
+    }
+}
+```
+
+可见在使用Message类编解码的使用方式是一样的，只是Netty中接收/发送二进制数据需要基于ByteBuf类去转换为byte[]给Message编解码；而在SocketIO中是以泛型编程的方式直接声明接收二进制数据byte[]；
+
+这也导致了在Netty里面可以写一个统一处理WebSocket的Handler，在处理WebSocket帧时可以判定是字符帧（TextWebSocketFrame）还是字节帧（BinaryWebSocketFrame），然后分别做处理；但是在SocketIO里面在添加监听器addEventListener时就决定了处理类型到底是byte[]还是String，不能是一个泛泛的Object对象然后区分处理，除非自己自定义一个泛泛的SocketIOFrame类然后根据什么内部bit位去判断到底是转换为byte[]还是String后才分别处理，这就需要看看netty-socketio的源码实现去了解了。
+
+## 源码
+* [开篇介绍Protobuf的Java例子代码](https://github.com/whg333/protobuf-sample)
+* [介绍短连接结合Protobuf的例子的代码](https://github.com/whg333/cocos2d-js-ajax-protobuf-nodejs-springmvc)
+* 介绍长连接结合Protobuf例子的[前端代码](https://github.com/whg333/protobuf.js)和[后端代码](https://github.com/whg333/Cocos2d-JS-ProtobufChat/tree/master/backend/java/src/main/java)
 
 ## 参考
-* [XMLHttpRequest Level 2 使用指南](http://www.ruanyifeng.com/blog/2012/09/xmlhttprequest_level_2.html)
+* [XMLHttpRequest Level 2 使用指南](http://www.ruanyifeng.com/blog/2012/09/xmlhttprequest_level_2.html)——里面提及了新旧2代XMLHttpRequest对象对二进制传输的支持
+* [WebSocket 是什么原理？为什么可以实现持久连接？](http://www.zhihu.com/question/20215561)——知乎上一篇比较通俗且接地气的像你解释什么是WebSocket
 
-（未完待续。。。）
+（完）
