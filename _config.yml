@@ -27,7 +27,7 @@ markdown:     redcarpet
 redcarpet:
     extensions: ["fenced_code_blocks", "tables", "highlight", "with_toc_data", "strikethrough", "underline"]
   
-highlighter:  rouge
+highlighter:  pygments
 lsi:          false
 excerpt_separator: "\n\n"
 
@@ -126,9 +126,6 @@ duoshuo:
 #################################### global configure #######################################
 username: whg333
 baseurl: /blog
-markdown: redcarpet
-safe: false
-highlighter: pygments
 
 title: 记忆碎片
 description: 书写是为了总结，总结是为了前进！
