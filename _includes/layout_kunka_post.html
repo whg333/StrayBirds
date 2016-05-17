@@ -4,7 +4,7 @@
         <span class="info-title"><i class="icon-calendar"></i> Published: </span>
         <span class="info-date">{{ page.date | date: "%Y-%m-%d" }}</span>
         <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
-        <span class="info-link"><a href="{{ site.url }}/navigations/categories.html#{{ page.category }}-ref" >{{ page.category }}</a></span>
+        <span class="info-link"><a href="{{ site.url }}/navigations/categories.html#{{ page.category }}-ref" >{{ page.category | join: ', ' }}</a></span>
     </div>
     {{ content }}
     <nav class="article-previous fn-clear">

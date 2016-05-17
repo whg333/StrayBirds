@@ -2,7 +2,7 @@
 layout: post
 title: Cocos2d-JS/Ajax用Protobuf与NodeJS/Java通信
 description: "Cocos2d-JS/Ajax用Protobuf与NodeJS/Java通信"
-category: [JavaScript]
+category: [JavaScript, Java]
 tags: [Cocos2d-JS, Ajax, Protobuf, NodeJS, Java]
 comments: true
 ---
