@@ -11,4 +11,30 @@ $(document).ready(function(){
 		window.open($(this).attr('src'));
         return false;
 	});
+	
+	//浮层跟随页面滚动
+	var $sidebar = $(".aside"),
+		$window = $(window),
+		$document = $(document),
+		offset = $sidebar.offset(),
+		height = $document.height() - $window.height(),
+		topPadding = 43;
+	
+	$window.scroll(function() {
+		if ($window.scrollTop() >= height) {
+            //console.log("滚动条已经到达底部为" + $document.scrollTop());
+            return;
+        }
+		console.log($window.scrollTop() + ', ' + offset.top);
+		if ($window.scrollTop() > offset.top) {
+			$sidebar.stop().animate({
+				marginTop : $window.scrollTop() - offset.top + topPadding
+			});
+		} else {
+			$sidebar.stop().animate({
+				marginTop : 26
+			});
+		}
+	});
+	
 });
