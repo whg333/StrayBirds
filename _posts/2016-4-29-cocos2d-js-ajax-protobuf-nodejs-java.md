@@ -860,7 +860,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 ## 源码
 * [开篇介绍Protobuf的Java例子代码](https://github.com/whg333/protobuf-sample)
 * [介绍短连接结合Protobuf的例子的代码](https://github.com/whg333/cocos2d-js-ajax-protobuf-nodejs-springmvc)
-* 介绍长连接结合Protobuf例子的[前端代码](https://github.com/whg333/protobuf.js)和[后端代码](https://github.com/whg333/Cocos2d-JS-ProtobufChat/tree/master/backend/java/src/main/java)
+* 介绍长连接结合Protobuf例子的[前端代码](https://github.com/whg333/protobuf.js/tree/master/examples)和[后端代码](https://github.com/whg333/Cocos2d-JS-ProtobufChat/tree/master/backend/java/src/main/java)
 
 ## 参考
 * [XMLHttpRequest Level 2 使用指南](http://www.ruanyifeng.com/blog/2012/09/xmlhttprequest_level_2.html)——里面提及了新旧2代XMLHttpRequest对象对二进制传输的支持
