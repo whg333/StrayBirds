@@ -315,7 +315,7 @@ function send() {
 ```
 
 #### 使用WebSocket
-下面使用WebSocket API重写上面SocketIO发送/接收Protobuf二进制的例子，可以看到其实是大同小异的，除了协议不是HTTP而是WebSocket，其API基本类似
+下面使用Html5 WebSocket API重写上面SocketIO发送/接收Protobuf二进制的例子，可以看到其实是大同小异的，除了协议不是HTTP而是WebSocket，其API基本类似
 
 ```java
 // Connect to our server: node server.js
@@ -359,8 +359,8 @@ function send() {
 #### NodeJS
 不得不说基于JavaScript语言的后端开发平台NodeJS确实很强大，它把浏览器Ajax这种事件驱动的异步编程模型的写法从前端照搬到了后端，其核心库完美的实现了很多底层模块并提供友好的对外API，令你启动一个HTTP服务器也就只需要写几行代码的事情，除此之外引入的模块化机制完美的避开了JS中常见的“命名污染”，还有类似Java中的Maven一样的依赖包管理工具——NPM，简直让你觉得真的是“处处都运行着JavaScript”，Java处处运行的梦想好像要被JavaScript替代了似的
 
-#### NodeJS使用protobuf.js处理Protobuf
-由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用protobuf.js来处理Protobuf，且使用了前面提到的TestProtobuf.proto
+#### NodeJS使用[protobuf.js](https://github.com/dcodeIO/protobuf.js)处理Protobuf
+由于NodeJS基于JavaScript语言，所以我们还是和前端的JavaScript代码一样使用[protobuf.js](https://github.com/dcodeIO/protobuf.js)来处理Protobuf，且使用了前面提到的TestProtobuf.proto
 
 ```java
 var ProtoBuf = require("protobufjs");
@@ -421,7 +421,7 @@ var server = http.createServer(function(request, response){
 #### Java SpringMVC与Protobuf
 Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以需要确保pom.xml文件中的Spring核心包以及SpringMVC包的版本都是4.1.6+，当然也需要确保依赖了Protobuf的Java包
 
-```java
+```xml
 <!-- springframework 4.0.7 RELEASE -->
 <dependency>
 	<groupId>org.springframework</groupId>
@@ -466,7 +466,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 
 然后web.xml配置了SpringMVC及其mvc.xml文件位置以及匹配后缀名
 
-```java
+```xml
 <!-- 引入上下文配置文件 -->
 <context-param>
 	<param-name>contextConfigLocation</param-name>
@@ -494,7 +494,7 @@ Java SpringMVC从4.1.6开始使支持Protobuf协议的自动编解码，所以�
 
 关键的部分在mvc.xml配置中，这里使用mvc:annotation-driven的配置写法配置了消息转换器为ProtobufHttpMessageConverter令SpringMVC自动支持Protobuf的编解码
 
-```java
+```xml
 <!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
 <context:component-scan base-package="com.why.game.web.*" />
 
@@ -532,7 +532,7 @@ public class TestController {
 ### 长连接——SocketIO/WebSocket
 这里以SocketIO为例来看看其在NodeJS和Java中的使用，其实WebSocket的使用方法也是大同小异，仅仅是API略微差别，但思想步骤是一样适用的
 
-#### NodeJS中的SocketIO库
+#### NodeJS中的[SocketIO](https://github.com/socketio/socket.io)库
 与前面介绍的SocketIO客户端[socket.io-client](https://github.com/socketio/socket.io-client)相对应的NodeJS服务端是[socket.io](https://github.com/socketio/socket.io)，我们需要在`package.json`添加dependencies依赖配置
 > "socket.io" : "~1.4.5"
 
@@ -574,7 +574,7 @@ io.sockets.on("connection", function(socket){
 
 注意上面的代码先使用require引入了Protobuf和SocketIO模块，然后初始化Protobuf的消息体并让SocketIO启动监听，这里SocketIO监听的server其实就是NodeJS创建的HTTP服务器，因为在NodeJS里面HTTP服务器和SocketIO服务器共用同一个端口；接下来就是Protobuf对接收到的二进制数据进行解码打印，然后把字母转换为大写后再编码发送出去
 
-#### NodeJS中的WebSocket库
+#### NodeJS中的[WebSocket](https://github.com/websockets/ws)库
 在NodeJS中使用WebSocket最简便的方式是使用GitHub上名为[ws](https://github.com/websockets/ws)的项目，其号称可能是NodeJS里面速度最快的WebSocket库，我们可以在`package.json`添加dependencies依赖配置
 > "ws": "~0.4"
 
@@ -609,12 +609,12 @@ wss.on("connection", function(socket) {
 });
 ```
 
-#### Java中的SocketIO库
+#### Java中的[Netty-SocketIO](https://github.com/mrniko/netty-socketio)库
 在Java中我们使用了GitHub上一个名为[netty-socketio](https://github.com/mrniko/netty-socketio)的项目，由名字可看出其是在Netty框架基础上实现的SocketIO协议，并提供了事件驱动注册监听器的写法，当你从NodeJS转换代码过来时会发现其写法大同小异：即NodeJS使用on方法来注册监听事件，netty-socketio中使用addEventListener方法来实现；NodeJS使用emit触发事件，而netty-socketio中使用sendEvent来触发事件等
 
 首先在pom.xml中加入netty-socketio的依赖以及Protobuf的依赖：
 
-```java
+```xml
 <dependency>
 	<groupId>com.corundumstudio.socketio</groupId>
 	<artifactId>netty-socketio</artifactId>
@@ -747,7 +747,7 @@ public class Message {
 ```
 
 #### Java中的WebSocket库
-此处我们基于[Netty](https://github.com/netty/netty)的WebSocket包实现来看看上面SocketIO服务类在Netty中长什么样，其中大部分代码均源自Netty自带的example包里的；首先看看Netty中的WebSocketServer
+此处我们基于[Netty4](https://github.com/netty/netty)下的WebSocket实现包来看看上面SocketIO服务类在Netty中长什么样，其中大部分代码均源自Netty自带的example包里的；首先看看Netty中的WebSocketServer
 
 ```java
 public final class WebSocketServer {
