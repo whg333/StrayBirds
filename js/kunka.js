@@ -20,12 +20,13 @@ $(document).ready(function(){
 		height = $document.height() - $window.height(),
 		topPadding = 43;
 	
+	//console.log('init height='+height);
 	$window.scroll(function() {
 		if ($window.scrollTop() >= height) {
             //console.log("滚动条已经到达底部为" + $document.scrollTop());
             return;
         }
-		console.log($window.scrollTop() + ', ' + offset.top);
+		//console.log($window.scrollTop() + ', ' + offset.top);
 		if ($window.scrollTop() > offset.top) {
 			$sidebar.stop().animate({
 				marginTop : $window.scrollTop() - offset.top + topPadding
