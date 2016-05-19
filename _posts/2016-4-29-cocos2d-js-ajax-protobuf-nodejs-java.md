@@ -8,7 +8,7 @@ comments: true
 ---
 
 ## Google的Protobuf
-Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列化协议并配备多种编程语言的实现（Java、C、C++、Python等，甚至JavaScript、ActionScript都有对应的实现），其本质是按照协议规范编写proto文件，该proto文件内容由若干个message消息体组成，而message消息体是由编程语言中常用的数据类型（int、long、String等）对应的Protobuf字段类型组合而成的，Protobuf的作用是可以帮你把定义好的message消息体按协议编码（Encode）转为二进制字节流（byte[]），反之亦可帮你把已编码的byte[]字节流再解码(Decode)还原回来。
+Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列化协议并配备多种编程语言的实现(Java、C、C++、Python等，甚至JavaScript、ActionScript都有对应的实现)，其本质是按照协议规范编写proto文件，该proto文件内容由若干个message消息体组成，而message消息体是由编程语言中常用的数据类型(int、long、String等)对应的Protobuf字段类型组合而成的，Protobuf的作用是可以帮你把定义好的message消息体按协议编码(Encode)转为二进制字节流(byte[])，反之亦可帮你把已编码的byte[]字节流再解码(Decode)还原回来。
 
 ### 操作步骤
 举个Java的例子，你想使用Protobuf把Java中的对象转成byte[]的话，需要如下这几个步骤：
@@ -17,7 +17,7 @@ Protobuf全称为“Protocol Buffers”，是Google开源出来的一个序列�
 2. 利用Protobuf对应Java语言的protoc.exe生成工具去根据第1步定义的proto文件生成对应的Protobu编解码Java类
 3. 使用第2步生成的Protobuf编解码Java类对Java对象做编解码的工作，例如编码Java对象为byte[]或者解码byte[]为Java对象
 
-这里用Java代码举例（[GitHub上的代码在这里](https://github.com/whg333/protobuf-sample)）来解释说明前面介绍使用Protobuf的步骤：
+这里用Java代码举例([GitHub上的代码在这里](https://github.com/whg333/protobuf-sample))来解释说明前面介绍使用Protobuf的步骤：
 
 1. 编写proto文件在其中定义message消息体，这里我们定义了一个名为StudentProto的消息体
 
@@ -124,14 +124,14 @@ public static void main(String[] args) {
 3. RMDB——形如MySql的RMDB，也都有支持byte[]二进制存储的Blob字段
 
 ### 总结与思考
-总结一下，因为Protobuf已经message转换为二进制字节流byte[]了，而计算机对二进制字节流的操作最在行了，所以除了压缩节约成本外，其可用性也接近计算机底层处理的本质了：因为无论是什么东西在计算机内的表示都是字节（即8个二进制位）！字符串String可以转为byte[]、图片可以转为byte[]、任何东西想在计算机内表示都必须是byte[]！
+总结一下，因为Protobuf已经message转换为二进制字节流byte[]了，而计算机对二进制字节流的操作最在行了，所以除了压缩节约成本外，其可用性也接近计算机底层处理的本质了：因为无论是什么东西在计算机内的表示都是字节(即8个二进制位)！字符串String可以转为byte[]、图片可以转为byte[]、任何东西想在计算机内表示都必须是byte[]！
 
 ## 前端使用Protobuf发送/接收二进制数据
-前面提到过Protobuf网络传输的场景，这里我们就来看看：前端（Cocos2d-JS/Ajax）如何使用Protobuf与后端（NodeJS/Java）通信？由于Protobuf能把proto文件定义的消息体转换为二进制字节流（byte[]），所以问题就变成：前端（Cocos2d-JS/Ajax）如何使用二进制与后端（NodeJS/Java）通信？
+前面提到过Protobuf网络传输的场景，这里我们就来看看：前端(Cocos2d-JS/Ajax)如何使用Protobuf与后端(NodeJS/Java)通信？由于Protobuf能把proto文件定义的消息体转换为二进制字节流(byte[])，所以问题就变成：前端(Cocos2d-JS/Ajax)如何使用二进制与后端(NodeJS/Java)通信？
 
 网络通信一般分为2类：**短连接和长连接**。短连接一般说的是基于HTTP协议的请求/响应的连接；而长连接则是基于TCP/IP协议的3次握手不随意中断的连接；当然其实HTTP协议是基于TCP/IP协议的，只是请求/响应这种模式令其相较TCP/IP来说更“随意”中断了一点，但中断的后果是太浪费底层TCP/IP连接了，所以之后的HTTP1.1以及2.0为了减少浪费提出了Keep-Alive及多路复用等改进，甚至演化出了Html5的WebSocket协议这种基于HTTP协议升级版的全双通长连接，发展趋势轨迹：TCP/IP长连接 --> HTTP短连接 --> WebSocket长连接；这也令我想起后端服务器处理请求IO模型的进化轨迹：单线程 --> 多线程 --> 事件驱动单线程
 
-下面根据这2个分类连接说说基于JavaScript的前端（Cocos2d-JS/Ajax）如何用Protobuf与后端（NodeJS/Java）通信
+下面根据这2个分类连接说说基于JavaScript的前端(Cocos2d-JS/Ajax)如何用Protobuf与后端(NodeJS/Java)通信
 
 ### 短连接——HTTP
 无论是Cocos2d-JS还是Ajax，其进行HTTP通信都是基于JavaScript的XMLHttpRequest对象！所以只要搞清楚XMLHttpRequest对象如何与后端通信发送/接收二进制即可。使用如下几步来操作XMLHttpRequest发送Protobuf二进制数据：
@@ -212,7 +212,7 @@ var ProtoBuf = dcodeIO.ProtoBuf,
     TestProto = TestProtobuf.TestProto;
 ```
 
-如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接收二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组（本质也是二进制字节流），接收的时候同样使用TestProto解码(decode)接收到的二进制数据
+如此一来我们就可以用TestProtobuf.proto文件中定义的消息体来发送/接收二进制了：发送的时候使用XMLHttpRequest对象的send方法发送经由TestProto编码(encode)后的buffer数组(本质也是二进制字节流)，接收的时候同样使用TestProto解码(decode)接收到的二进制数据
 
 ```java
 xhr.onreadystatechange = function(){
@@ -248,7 +248,7 @@ function str2bytes(str){
 ### 长连接——SocketIO/WebSocket
 可以说整个互联网的普及依靠的是**浏览器和HTTP协议**这一最佳拍档的完美组合，老早前所说的上网冲浪就是打开浏览器，输入网页地址，然后等待浏览器渲染显示网页后阅览；但HTTP协议的一个短板就是不能即时刷新，即需要自己手动刷新页面，这也就是为什么贴吧/论坛有“F5已烂”这一说法，因为最新的信息不会自动呈现出来。
 
-虽然到了Web2.0时代由于Ajax的应用这一短板的用户体验有了大幅度的改善，但Ajax的本质依旧还是基于HTTP协议的短连接只不过是浏览器异步加载完成的响应信息而已；甚至还有使用“轮询”机制模仿长连接即时性的做法（即定时的用Ajax“拉取”服务器的信息来更新页面），但由于HTTP短连接本质就不是一个真实的双通道全开的“稳定”的连接，所以其即时性方面无论如何蹩脚的去模拟总会有或多或少的不爽（例如实现起来费劲麻烦等）。
+虽然到了Web2.0时代由于Ajax的应用这一短板的用户体验有了大幅度的改善，但Ajax的本质依旧还是基于HTTP协议的短连接只不过是浏览器异步加载完成的响应信息而已；甚至还有使用“轮询”机制模仿长连接即时性的做法(即定时的用Ajax“拉取”服务器的信息来更新页面)，但由于HTTP短连接本质就不是一个真实的双通道全开的“稳定”的连接，所以其即时性方面无论如何蹩脚的去模拟总会有或多或少的不爽(例如实现起来费劲麻烦等)。
 
 于是乎Html5的到来顺便携带了WebSocket：这一在HTTP协议基础上做出“升级”的“稳定”的长连接协议，其本质上是完全双通道全开，即服务器和客户端之间的通道随时可以进行互相推送消息。而SocketIO协议则是考虑到不是所有的浏览器都支持WebSocket，于是做了层WebSocket的封装，对于不支持WebSocket的浏览器其内部可能使用的是Ajax模拟的长连接。
 
@@ -815,7 +815,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
 }
 ```
 
-最后看看实现与之前的服务器业务逻辑（把接收到的数据转换成大写后再发送回去给客户端）相同的WebSocketFrameHandler类的写法：
+最后看看实现与之前的服务器业务逻辑(把接收到的数据转换成大写后再发送回去给客户端)相同的WebSocketFrameHandler类的写法：
 
 ```java
 public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
@@ -855,7 +855,7 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocket
 
 可见在使用Message类编解码的使用方式是一样的，只是Netty中接收/发送二进制数据需要基于ByteBuf类去转换为byte[]给Message编解码；而在SocketIO中是以泛型编程的方式直接声明接收二进制数据byte[]；
 
-这也导致了在Netty里面可以写一个统一处理WebSocket的Handler，在处理WebSocket帧时可以判定是字符帧（TextWebSocketFrame）还是字节帧（BinaryWebSocketFrame），然后分别做处理；但是在SocketIO里面在添加监听器addEventListener时就决定了处理类型到底是byte[]还是String，不能是一个泛泛的Object对象然后区分处理，除非自己自定义一个泛泛的SocketIOFrame类然后根据什么内部bit位去判断到底是转换为byte[]还是String后才分别处理，这就需要看看netty-socketio的源码实现去了解了。
+这也导致了在Netty里面可以写一个统一处理WebSocket的Handler，在处理WebSocket帧时可以判定是字符帧(TextWebSocketFrame)还是字节帧(BinaryWebSocketFrame)，然后分别做处理；但是在SocketIO里面在添加监听器addEventListener时就决定了处理类型到底是byte[]还是String，不能是一个泛泛的Object对象然后区分处理，除非自己自定义一个泛泛的SocketIOFrame类然后根据什么内部bit位去判断到底是转换为byte[]还是String后才分别处理，这就需要看看netty-socketio的源码实现去了解了。
 
 ## 源码
 * [开篇介绍Protobuf的Java例子代码](https://github.com/whg333/protobuf-sample)
