@@ -285,7 +285,7 @@ var Message = ProtoBuf.loadProtoFile("./example.proto").build("Message");
 // Connect to our SocketIO server: node server.js
 var socket = io.connect("http://localhost:3000");
 
-socket.on("connection", function () {
+socket.on("connect", function () {
     log.value += "Connected\n";
 });
 
