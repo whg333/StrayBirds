@@ -126,7 +126,6 @@ topic.publish(new ConnectMessage(client.getSessionId()));
 ```java
 package com.corundumstudio.socketio.store.pubsub;
 
-
 public interface PubSubStore {
 
     void publish(String name, PubSubMessage msg);
@@ -188,22 +187,47 @@ server.getConfiguration().getStoreFactory().pubSubStore().subscribe("connected",
 server.getConfiguration().getStoreFactory().pubSubStore().publish("connected", new ConnectMessage(client.getSessionId()));
 ```
 
-但这种火车链式调用是我们所不愿看到的，可以将PubSubStore的引用保存到实例变量中缩短下代码
+但这种火车链式调用是我们所不愿看到的，我们可以将PubSubStore的引用保存到实例变量中缩短下代码
+
+```java
+private final PubSubStore pubSubStore;
+
+public SocketIORedissonServer(){
+    server = new SocketIOServer(config());
+    pubSubStore = server.getConfiguration().getStoreFactory().pubSubStore();
+}
+
+@Override
+public void onConnect(SocketIOClient client) {
+    String sessionId = client.getSessionId().toString();
+    client.set("sessionId", sessionId);
+    System.out.println(sessionId+" connecting..."+client.get("sessionId"));
+
+    pubSubStore.publish("connected", new ConnectMessage(client.getSessionId()));
+}
+```
+
+如此一来就可以在SocketIO Server的语义下执行发布/订阅，倒也合情合理吧
 
 ## 遇到的问题及其解决
 看起来上面所介绍的Netty-SokcetIO整合Redisson及其简单使用好像是一步到位似得，但其实整个整合过程中还是遭遇了不少问题的，而且很多问题都是redis中的。下面就总结性遇到的问题及其解决，也给自己提个醒：实践出真知
 
 ### ERR unknown command 'EVAL'
-出现这个问题是因为使用的redis版本过低，Redisson使用lua脚本的方式去执行命令，而Redis的EVAL命令是从Redis 2.6.0 版本开始支持的，所以出现此错误代表需要升级Redis版本到2.6以上版本即可
+出现这个问题是因为使用的redis版本过低，Redisson内部使用执行lua脚本的方式去完成对Redis的操作，而Redis执行lua脚本的EVAL命令是从Redis 2.6.0 版本开始支持的，所以出现此错误代表需要升级Redis版本到2.6以上版本即可
 
 ### ERR Error compiling script (new function): user_script:1: '=' expected near 'end'
-为了解决Redis不支持EVAL错误，升级Redis到3.0，于是尝试用redis-cli.exe eval执行一个简单的lua脚本，却报了此错误，后来发现应该使用**--eval**而不是eval去执行lua脚本
+为了解决Redis不支持EVAL错误，升级Redis到3.0，于是尝试在cmd命令行下使用redis-cli.exe eval执行一个简单的lua脚本，但却报了此错误，后来发现应该使用**--eval**而不是eval去执行lua脚本文件
 
 ### ERR unknown command 'CLUSTER'
-使用Redisson的useClusterServers单机模式没问题后，想尝试下Redis 3版本中新增的Cluster集群模式，于是用`redissonConfig.useSingleServer().setAddress(SINGLE_SERVER);`来配置Redisson，但却报错了；原因比较简单，就是因为没有配置Redis运行Cluster模式，这里有篇[《windows下使用RedisCluster集群简单实例》](http://www.jianshu.com/p/22af55518f6d)详解了如何在Win7下配置Redis运行Cluster模式的，照着一步步去做即可
+使用Redisson的useClusterServers单机模式没问题后，想尝试下Redis 3版本中新增的Cluster集群模式，于是用redissonConfig.useSingleServer().setAddress(SINGLE_SERVER);来配置Redisson，但却报错了；原因比较简单，就是因为没有配置Redis运行Cluster模式，这里有篇[《windows下使用RedisCluster集群简单实例》](http://www.jianshu.com/p/22af55518f6d)详解了如何在Win7下配置Redis运行Cluster模式的，照着一步步去做即可
 
 ### [ERR] Node 127.0.0.1:7000 is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0.
-这个错误是执行redis-ctrib.rb create --replicas命令出现的，出错原因是因为Redis已经检测到有Cluster集群存在了，即redis-ctrib.rb create --replicas命令应该只在第一次创建Cluster集群时使用，在创建Cluster集群完毕后，即使关掉集群内所有节点（master/slave），也只需要重启各个节点即可，而不需要执行redis-ctrib.rb create --replicas命令
+这个错误是执行如下命令出现的
+
+> redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:70
+04 127.0.0.1:7005
+
+出错原因是因为Redis已经检测到有Cluster集群存在了，即redis-ctrib.rb create --replicas命令应该只在**第一次创建Cluster集群时**使用，在创建Cluster集群完毕后，即使关掉集群内所有节点（master/slave），也只需要重启各个节点即可，而不必再次执行redis-ctrib.rb create --replicas命令了
 
 ### (error) MOVED 12291 127.0.0.1:7002
 这个错误原因是当你配置Redis运行Cluster模式后，使用了单机模式登陆集群中的某台节点，但要查询的数据却不在本节点上；即用
@@ -217,6 +241,9 @@ server.getConfiguration().getStoreFactory().pubSubStore().publish("connected", n
 > redis-cli.exe **-c** -h localhost -p 7000
 
 注意多了个-c代表集群登陆！如此一来即使登陆的是集群7000端口，查询的数据在集群7002端口的话，Redis就能自动帮你跳转到集群7002中做查询了
+
+## 源码
+* [SocketIORedissonServer及其他Netty-Socket例子也可参考下](https://github.com/whg333/Cocos2d-JS-ProtobufChat/tree/master/backend/java/src/main/java)
 
 ## 参考
 * [windows下使用RedisCluster集群简单实例](http://www.jianshu.com/p/22af55518f6d)

@@ -609,7 +609,7 @@ wss.on("connection", function(socket) {
 });
 ```
 
-#### Java中的[Netty-SocketIO](https://github.com/mrniko/netty-socketio)库
+#### Java中的[SocketIO](https://github.com/mrniko/netty-socketio)库
 在Java中我们使用了GitHub上一个名为[netty-socketio](https://github.com/mrniko/netty-socketio)的项目，由名字可看出其是在Netty框架基础上实现的SocketIO协议，并提供了事件驱动注册监听器的写法，当你从NodeJS转换代码过来时会发现其写法大同小异：即NodeJS使用on方法来注册监听事件，netty-socketio中使用addEventListener方法来实现；NodeJS使用emit触发事件，而netty-socketio中使用sendEvent来触发事件等
 
 首先在pom.xml中加入netty-socketio的依赖以及Protobuf的依赖：
@@ -664,8 +664,7 @@ public class SocketIOProtoServer implements ConnectListener, DisconnectListener{
 	
 	public void start(){
         server.addConnectListener(this);
-        server.addDisconnectListener(this);
-        
+        server.addDisconnectListener(this);   
         server.addEventListener("message", byte[].class, new DataListener<byte[]>() {
             @Override
             public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
@@ -696,6 +695,68 @@ public class SocketIOProtoServer implements ConnectListener, DisconnectListener{
 	public void onDisconnect(SocketIOClient client) {
 		System.out.println(client.getSessionId()+" disconnecting...");
 	}
+	
+	public static void main(String[] args){
+    	new SocketIOProtoServer().start();
+    }
+
+}
+```
+
+Netty-SocketIO除了基于接口实现（例如上面的ConnectListener和DisconnectListener与DataListener这3个接口）完成监听外，还提供了基于注解的监听机制（对应上面接口实现的3个注解分别是@OnConnect和@OnDisconnect与@OnEvent），如下基于注解的代码和上面基于接口实现效果是一样的，注意添加监听器部分使用server.addListeners(annotationInstance)即可
+
+```java
+public class SocketIOProtoServer{
+	
+	private static final String HOST = "localhost";
+	private static final int PORT = 3001;
+	
+	private final SocketIOServer server;
+	
+	public SocketIOProtoServer(){
+        server = new SocketIOServer(config());
+	}
+	
+	private Configuration config(){
+	    Configuration config = new Configuration();
+        config.setHostname(HOST);
+        config.setPort(PORT);
+        config.setMaxFramePayloadLength(1024 * 1024);
+        config.setMaxHttpContentLength(1024 * 1024);
+        return config;
+	}
+	
+	public void start(){
+        server.addListeners(this);
+        
+        server.start();
+        System.out.println("\n------ "+this.getClass().getSimpleName()+"start on "+PORT+" ------\n");
+	}
+	
+	public void stop(){
+	    server.stop();
+	}
+
+	@OnConnect
+	public void onConnect(SocketIOClient client) {
+		System.out.println(client.getSessionId()+" connecting...");
+	}
+	
+	@OnDisconnect
+	public void onDisconnect(SocketIOClient client) {
+		System.out.println(client.getSessionId()+" disconnecting...");
+	}
+
+	@OnEvent("message")
+    public void onData(SocketIOClient client, byte[] data, AckRequest ackRequest) {
+        Message message = Message.parse(data);
+        System.out.println("Received: "+message.getText());
+        // Transform the text to upper case
+        message.setText(message.getText().toUpperCase());
+        // Re-encode it and send it back
+        client.sendEvent("message", message.toByteArray());
+        System.out.println("Sent: "+message.getText());
+    }
 	
 	public static void main(String[] args){
     	new SocketIOProtoServer().start();
