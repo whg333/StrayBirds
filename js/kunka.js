@@ -20,8 +20,20 @@ $(document).ready(function(){
 		height = $document.height() - $window.height(),
 		topPadding = 43;
 	
+	var $backToTop = $("#back-to-top");
+	$backToTop.click(function(){  
+        $('body,html').animate({scrollTop:0}, 1000);  
+        return false;  
+    });
+	
 	//console.log('init height='+height);
 	$window.scroll(function() {
+		if($window.scrollTop() > 100){
+			$backToTop.fadeIn(1500);
+		}else{
+			$backToTop.fadeOut(1000);
+		}
+		
 		if ($window.scrollTop() >= height) {
             //console.log("滚动条已经到达底部为" + $document.scrollTop());
             return;
