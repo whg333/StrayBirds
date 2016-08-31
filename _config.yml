@@ -129,7 +129,7 @@ baseurl: /blog
 
 title: 记忆碎片
 description: 书写是为了总结，总结是为了前进！
-theme: kunka
+themename: kunka
 disqusname: whg
 
 #custom variables
