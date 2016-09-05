@@ -94,18 +94,20 @@ follow:
 #Links
 customLinks:
   - item:
+    - text: asroads
+      url: http://www.asroads.com
     - text: 掌心
       url: http://www.zhanxin.info
     - text: Jekyll
       url: http://jekyllrb.com
-    - text: Jekyll Theme
-      url: http://www.zhanxin.info/themes.html
     - text: canvas-nest.js
       url: https://github.com/aTool-org/canvas-nest.js/blob/master/README-zh.md
     - text: 人体时钟hone hone clock
       url: http://ziren.org/tools/hone-hone-clock.html
     message: Friends
   - item:
+    - text: Jekyll Theme
+      url: http://www.zhanxin.info/themes.html
     - text: Font Awesome
       url: http://fortawesome.github.io/Font-Awesome/
     - text: Google Font
