@@ -7,8 +7,8 @@ tags: [大型网站技术架构]
 comments: true
 ---
 
-## [《高性能网站建设指南》](https://book.douban.com/subject/3132277/)
-赫赫有名的雅虎前端优化14条军规其实早在2007年就被雅虎首席性能工程师Steve Souders总结成书并由著名的计算机书籍出版商O'Reilly出版——**[《High Performance Web Sites》](https://www.amazon.com/dp/0596529309?tag=stevsoud-20&camp=14573&creative=327641&linkCode=as1&creativeASIN=0596529309&adid=00GNM1ZWW77KSD0RERXN&)**（中译版**[《高性能网站建设指南》](https://book.douban.com/subject/3132277/)**则是在2008年由电子工业出版社出版），这里记录下自己在真实的线上项目中如何根据情况去实施这些军规，即作为个人总结也作抛砖引玉之用
+## 14条让网站加速的“黄金法则”
+赫赫有名的雅虎前端优化14条军规其实早在2007年就被雅虎首席性能工程师Steve Souders总结成书并由著名的计算机书籍出版商O'Reilly出版——[《High Performance Web Sites》](https://www.amazon.com/dp/0596529309?tag=stevsoud-20&camp=14573&creative=327641&linkCode=as1&creativeASIN=0596529309&adid=00GNM1ZWW77KSD0RERXN&)（中译版[《高性能网站建设指南》](https://book.douban.com/subject/3132277/)则是在2008年由电子工业出版社出版），这里记录下自己在真实的线上项目中如何根据情况去实施这些军规，即作为个人总结也作抛砖引玉之用
 
 ![book](http://img10.360buyimg.com/n1/jfs/t1108/296/963065181/329393/3491fde4/5559c211N8db85f8e.jpg)
 
