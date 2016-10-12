@@ -35,7 +35,7 @@ comments: true
 
 ![pic01](http://cejdh.img48.wal8.com/img48/533449_20151202165458/147630047154.png)
 
-而针对JavaScript脚本的合并，因为目前H5游戏前端无论哪个流行框架（Cocos2d-JS、白鹭或者LayaBox），都会集成发布H5游戏页面index.html的功能，其中就会把开发者们编写的JavaScript（即使真正开发者使用的不是原生的JavaScript语言，例如C++、TypeScript或者ActionScript，也能自动转换为JavaScript代码）代码压缩合并成app.min.js（注意下面截图为app.max.js只是名字为max而且，其实代码是已经经过压缩和精简后的），同样也只需要一次HTTP请求就能获取所有前端业务逻辑的源代码了
+而针对JavaScript脚本的合并，因为目前H5游戏前端无论哪个流行框架（[Cocos2d-JS](http://www.cocos.com/)、[白鹭](http://www.egret.com/)或者[LayaBox](http://layabox.com/)），都会集成发布H5游戏页面index.html的功能，其中就会把开发者们编写的JavaScript（即使真正开发者使用的不是原生的JavaScript语言，例如C++、TypeScript或者ActionScript，也能自动转换为JavaScript代码）代码压缩合并成app.min.js（注意下面截图为app.max.js只是名字为max而且，其实代码是已经经过压缩和精简后的），同样也只需要一次HTTP请求就能获取所有前端业务逻辑的源代码了
 
 ![pic02](http://cejdh.img48.wal8.com/img48/533449_20151202165458/147630069905.png)
 
