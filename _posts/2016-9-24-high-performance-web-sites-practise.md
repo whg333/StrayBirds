@@ -22,7 +22,7 @@ comments: true
 
 ## 项目简介和14条军规的实践
 ### 项目简介
-我们的项目是一款经营模拟类的H5游戏——[《QQ花藤》](https://h5.qzone.qq.com/mqzone/jsp?starttime=1476299936000&hostuin=174708164#174708164/playbar/detail?appid=1105477665)，即使不是传统的Web互联网网站，但是H5游戏本质上也还是网页游戏，即通过JavaScript或ActionScript脚本在浏览器中运行的游戏。其实只要本质上是涉及到浏览器访问Web页面，且需要下载和解析Web页面内的组件，那这14条网站加速的“黄金法则”都是适用的！
+我们的项目是一款经营模拟类的H5游戏——[《QQ花藤》](https://h5.qzone.qq.com/mqzone/jsp?starttime=1476299936000&hostuin=174708164#174708164/playbar/detail?appid=1105477665)，即使不是传统的Web互联网网站，但是H5游戏本质上也还是网页游戏，即通过JavaScript脚本在浏览器中运行的游戏。其实只要本质上是涉及到浏览器访问Web页面，且需要下载和解析Web页面内的组件，那这14条网站加速的“黄金法则”都是适用的！
 
 ![game](http://cejdh.img48.wal8.com/img48/533449_20151202165458/147630047064.png)
 
