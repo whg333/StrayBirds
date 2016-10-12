@@ -21,9 +21,9 @@ Bob大叔在[《代码整洁之道》](https://book.douban.com/subject/4199741/)
 * 假如之前的代码可读性还不错的话，那修改起来就比较省心，如果配上可读的单元测试的话就再好不过了（但Unit Test和TDD在中国市场环境下好像少得可怜？），如此一来程序员们即能开心的挣钱，有省出多余的时间去做自己喜欢的事情了
 
 ## [《编写可读代码的艺术》](https://book.douban.com/subject/10797189/)读书笔记
-![book0](http://images.bookuu.com/book/C/01400/97871113854482294829-fm.jpg)
-
 这里记录下[《编写可读代码的艺术》](https://book.douban.com/subject/10797189/)里面提到的建议技巧，结合之前阅读[《重构》](https://book.douban.com/subject/1229923/)和[《代码整洁之道》](https://book.douban.com/subject/4199741/)以及工作中的一些经历，记录下自己的理解，毕竟“好记性不如烂笔头”
+
+![book0](http://cejdh.img48.wal8.com/img48/533449_20151202165458/147630123253.png)
 
 ### 第1章——代码应该易于理解
 > 主题思想——代码应该易于理解
