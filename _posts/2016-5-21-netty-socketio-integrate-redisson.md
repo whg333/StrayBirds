@@ -248,3 +248,5 @@ public void onConnect(SocketIOClient client) {
 ## 参考
 * [windows下使用RedisCluster集群简单实例](http://www.jianshu.com/p/22af55518f6d)
 * [Redis 命令参考 » 集群教程](http://doc.redisfans.com/topic/cluster-tutorial.html)
+
+（完）
