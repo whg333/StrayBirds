@@ -187,12 +187,12 @@ public class Log4jProperties {
 		//Global logging configuration
 		pro.put("log4j.rootLogger", Constant.LOG_LEVEL+", stdout");
 
-		pro.put("log4j.logger.com.hoolai", Constant.LOG_LEVEL);
-		pro.put("log4j.logger.com.hoolai.huaTeng.bo.battle", Constant.LOG_LEVEL);
-		pro.put("log4j.logger.com.hoolai.keyvalue", "DEBUG");
-		pro.put("log4j.logger.com.hoolai.exception.ExceptionHandler", "DEBUG");
-		pro.put("log4j.logger.com.hoolai.huaTeng.bo.audit.BlackList", "INFO");
-		pro.put("log4j.logger.com.hoolai.huaTeng.job", "INFO");
+		pro.put("log4j.logger.com.whg", Constant.LOG_LEVEL);
+		pro.put("log4j.logger.com.whg.test.bo.battle", Constant.LOG_LEVEL);
+		pro.put("log4j.logger.com.whg.keyvalue", "DEBUG");
+		pro.put("log4j.logger.com.whg.exception.ExceptionHandler", "DEBUG");
+		pro.put("log4j.logger.com.whg.test.bo.audit.BlackList", "INFO");
+		pro.put("log4j.logger.com.whg.test.job", "INFO");
 
 		pro.put("log4j.appender.empty", "org.apache.log4j.varia.NullAppender");
 
@@ -203,7 +203,7 @@ public class Log4jProperties {
 
 		//File Output
 		pro.put("log4j.appender.fileout", "org.apache.log4j.RollingFileAppender");
-		pro.put("log4j.appender.fileout.File", "${catalina.home}/logs/huaTeng/fileout.log");
+		pro.put("log4j.appender.fileout.File", "${catalina.home}/logs/test/fileout.log");
 		pro.put("log4j.appender.fileout.MaxFileSize", "10000KB");
 		pro.put("log4j.appender.fileout.layout", "org.apache.log4j.PatternLayout");
 		pro.put("log4j.appender.fileout.layout.ConversionPattern", "[%d{yyyy-MM-dd HH:mm:ss}] [%5p] [%c{1}:%L] [%m]%n");
